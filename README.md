@@ -1,5 +1,5 @@
 # docker_matecat
-Docker configuration for MateCat web cattool https://github.com/matecat/MateCat
+Dockerization of the MateCat web CatTool https://github.com/matecat/MateCat
 
 
 ## Configuration
