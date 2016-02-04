@@ -12,7 +12,7 @@ ENV MATECAT_HOME "/var/www/matecat"
 COPY ./app_configs/config.ini /tmp/config.ini
 
 # If you want to enable the login ssystem add your oauth_config.ini taken from Google
-COPY ./app_configs/oauth_config.ini /tmp/oauth_config.ini
+#COPY ./app_configs/oauth_config.ini /tmp/oauth_config.ini
 
 COPY ./app_configs/task_manager_config.ini /tmp/task_manager_config.ini
 
