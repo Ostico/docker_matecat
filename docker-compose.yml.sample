@@ -1,0 +1,25 @@
+redis:
+  image: redis
+  ports:
+    - 6379:6379
+amq:
+  build: ./AMQ/
+  ports:
+    - 61613:61613
+    - 8161:8161
+mysql:
+  build: ./MySQL/
+  ports:
+    - 3306:3306
+matecat:
+  build: ./MateCatApache/
+  volumes:
+    - ~/your/host/path/to/matecat:/var/www/matecat:rw
+  ports:
+    - 80:80
+    - 9000:9000
+    - 22
+  links:
+    - mysql
+    - redis
+    - amq
