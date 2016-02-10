@@ -92,46 +92,10 @@ chown -R ${USER_OWNER} ./support_scripts
 chown ${USER_OWNER} ./index.php
 
 
-########### MONIT TOOL SERVICES UPDATE
-
-cp "${MATECAT_HOME}/internal_scripts/UpgradeVersion/monit/fastAnalysis/fastAnalysis.sh" "${SERVICES_DIR}/fastAnalysis"
-sed -ri 's#/home/matecat/pro_matecat_com#/var/www/matecat#' "${SERVICES_DIR}/fastAnalysis"
-chmod +x "${SERVICES_DIR}/fastAnalysis"
-
-cp "${MATECAT_HOME}/internal_scripts/UpgradeVersion/monit/tmAnalysis/tmAnalysis.sh" "${SERVICES_DIR}/tmAnalysis"
-sed -ri 's#/home/matecat/pro_matecat_com#/var/www/matecat#' "${SERVICES_DIR}/tmAnalysis"
-chmod +x "${SERVICES_DIR}/tmAnalysis"
-
-cp "${MATECAT_HOME}/internal_scripts/UpgradeVersion/monit/tmAnalysis/testTMWorkers.sh" "/usr/local/bin/TestTMWorkers"
-sed -ri 's#/home/matecat/pro_matecat_com#/var/www/matecat#' "/usr/local/bin/TestTMWorkers"
-chmod +x "/usr/local/bin/TestTMWorkers"
-
-cp "${MATECAT_HOME}/internal_scripts/UpgradeVersion/monit/nodejs/nodejs.sh" "${SERVICES_DIR}/nodejs"
-sed -ri 's#/home/matecat/pro_matecat_com#/var/www/matecat#' "${SERVICES_DIR}/nodejs"
-chmod +x "${SERVICES_DIR}/nodejs"
-
-# Installing monit scripts
-cp "${MATECAT_HOME}/internal_scripts/UpgradeVersion/monit/fastAnalysis/monit_conf.d_fastAnalysis" "/etc/monit/conf.d/fastAnalysis"
-cp "${MATECAT_HOME}/internal_scripts/UpgradeVersion/monit/tmAnalysis/monit_conf.d_tmAnalysis" "/etc/monit/conf.d/tmAnalysis"
-cp "${MATECAT_HOME}/internal_scripts/UpgradeVersion/monit/nodejs/monit_conf.d_nodejs" "/etc/monit/conf.d/nodejs"
-
-
-echo "Sending command: monit unmonitor all"
-monit unmonitor all
-
-/etc/init.d/fastAnalysis start
-/etc/init.d/tmAnalysis start
-/etc/init.d/nodejs start
-
-# restart Daemons
-echo "Sending command: monit reload"
-monit reload
-
-echo "Wait for monit to reload (5s)"
-sleep 5
-
-echo "Sending command: monit monitor all"
-monit monitor all
+########### BOOT ANALYSIS
+pushd ./lib/Utils/Analysis
+/bin/bash restartAnalysis.sh
+popd
 
 echo "Starting Apache..."
 /etc/init.d/apache2 restart
