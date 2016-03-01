@@ -13,11 +13,20 @@ mysql:
     - 3306:3306
 matecat:
   build: ./MateCatApache/
+
+  ## Remove this environment block if you don't need it ##
+  environment:
+    XDEBUG_CONFIG: {{REMOVE THIS ROW OR INSERT YOUR HOST IP}}
+    FILTERS_ADDRESS: {{REMOVE THIS KEY OR INSERT YOUR CUSTOM FILTERS ADDRESS}}
+    SMTP_HOST: {{YOUR SMTP}}
+    SMTP_PORT: {{SMTP PORT}}
+  ## Remove this environment block if you don't need it ##
+
   volumes:
     - ~/your/host/path/to/matecat:/var/www/matecat:rw
   ports:
     - 80:80
-    - 9000:9000
+    - 7788:7788
     - 22
   links:
     - mysql

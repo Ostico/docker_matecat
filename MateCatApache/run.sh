@@ -33,19 +33,18 @@ sed -ri -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" /etc/php5/
 sed -ri -e "s/^memory_limit.*/memory_limit = ${PHP_MAX_MEMORY}/" /etc/php5/apache2/php.ini
 sed -ri -e "s/^short_open_tag.*/short_open_tag = On/" /etc/php5/apache2/php.ini
 
-# get the container IP
-ContainerIP=`ifconfig  | grep 'eth0' -1 | grep 'inet' | cut -d: -f2 | awk '{ print $1}'`
-echo "Container IP: " ${ContainerIP}
-
 # Configure XDebug ( if needed )
-XDEBUG='zend_extension='$(find /usr/lib/php5/ -name xdebug.so)'
-xdebug.remote_enable=1
-xdebug.remote_autostart=1
-xdebug.remote_host="'${ContainerIP}'"
-xdebug.remote_port=9000
-xdebug.idekey="storm"
-'
-printf "${XDEBUG}" > /etc/php5/conf.d/xdebug.ini
+if [[ -n "${XDEBUG_CONFIG}" ]]; then
+    XDEBUG='zend_extension='$(find /usr/lib/php5/ -name xdebug.so)'
+    xdebug.remote_enable=1
+    xdebug.remote_autostart=1
+    xdebug.remote_host="'${XDEBUG_CONFIG}'"
+    xdebug.remote_port=9000
+    xdebug.idekey="storm"'
+
+    printf "${XDEBUG}\n\n"
+    printf "${XDEBUG}" > /etc/php5/conf.d/xdebug.ini
+fi
 
 apache2ctl stop
 echo "Apache Stopped"
@@ -53,13 +52,31 @@ echo "Apache Stopped"
 # MateCat
 MATECAT_VERSION=$(fgrep '=' ./inc/version.ini | awk '{print $3}')
 cp /tmp/config.ini ./inc/
+cp /tmp/node_config.ini ./nodejs/config.ini
 cp /tmp/oauth_config.ini ./inc/
+cp /tmp/Error_Mail_List.ini ./inc/
 cp /tmp/task_manager_config.ini ./daemons/
 
 sed -ri -e "s/X.X.X/${MATECAT_VERSION}/g" ./inc/config.ini
+sed -ri -e "s/_SMTP_HOST_/${SMTP_HOST}/g" ./inc/config.ini
+sed -ri -e "s/_SMTP_HOST_/${SMTP_HOST}/g" ./inc/Error_Mail_List.ini
+
+if [[ -n "${SMTP_PORT}" ]]; then
+    sed -ri -e "s/SMTP_PORT = 25/SMTP_PORT = ${SMTP_PORT}/g" ./inc/config.ini
+    sed -ri -e "s/Port = 25/Port = ${SMTP_PORT}/g" ./inc/Error_Mail_List.ini
+    printf "Changed SMTP PORT address to: ${SMTP_PORT}\n\n"
+fi
+
+if [[ -n "${FILTERS_ADDRESS}" ]]; then
+    sed -ri -e "s%https://translated-matecat-filters-v1.p.mashape.com%${FILTERS_ADDRESS}%g" ./inc/config.ini
+    printf "Changed filter address to: ${FILTERS_ADDRESS}\n\n"
+fi
 
 # debug, configuration
-printf "`cat ./inc/config.ini`"
+echo "`cat ./inc/config.ini`"
+
+php -r "readfile('https://getcomposer.org/installer');" | php
+php ${MATECAT_HOME}/composer.phar install
 
 pushd ./support_scripts/grunt
 
@@ -68,21 +85,21 @@ pushd ./support_scripts/grunt
     if ! type grunt >/dev/null; then
         rm -rf ./node_modules
         echo "Installing grunt"
-        npm install -g
         npm install -g grunt-cli
-        npm install
-        npm install grunt-cli
     fi
 
+    npm install
     grunt development
+
 popd
 
 pushd ./nodejs
     if [[ -z "node_modules" ]]; then
         # NodeJs install sse-channel events
-        npm install
         sed -ri -e "s/localhost/amq/" server.js
     fi
+    npm install
+    node server.js &
 popd
 
 chown -R ${USER_OWNER} ./inc
