@@ -58,9 +58,11 @@ cp docker-compose.yml.sample docker-compose.yml
 ```
 
 #### Further MateCat configurations ( Advanced users )
-More specific configurations can be made directly into your ```docker_matecat/MatecatApache/config.ini``` 
-( Ex: ```/your/preferred/docker_matecat_path/docker_matecat/MateCatApache/app_configs/config.ini``` )
-
+More specific configurations can be made directly into your ```docker_matecat/MatecatApache/config.ini```
+Ex: 
+```
+/your/preferred/docker_matecat_path/docker_matecat/MateCatApache/app_configs/config.ini
+```
 before docker starts the installation.
 
 #### Start Docker
