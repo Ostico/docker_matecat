@@ -11,7 +11,9 @@ Dockerization of the MateCat web CatTool https://github.com/matecat/MateCat
 - To use MateCat you need to have git installed on your machine.
   * Follow the official instructions on the Git site for your system. [Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - To use docker_matecat you need to install docker and docker-compose.
-  * Follow the official instructions on the Docker site for your system. [Install Docker Compose](https://docs.docker.com/compose/install/)
+  * Follow the official instructions on the Docker site for your system. 
+    * [Install Docker](https://docs.docker.com/engine/installation/)
+    * [Install Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Configuration
 
