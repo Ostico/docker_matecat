@@ -46,7 +46,7 @@ if [[ -n "${SMTP_PORT}" ]]; then
 fi
 
 if [[ -n "${FILTERS_ADDRESS}" ]]; then
-    sed -ri -e "s%https://translated-matecat-filters-v1.p.mashape.com%${FILTERS_ADDRESS}%g" ./inc/config.ini
+    sed -ri -e "s%https:\/\/translated-matecat-filters-v1.p.mashape.com%${FILTERS_ADDRESS}%g" ./inc/config.ini
     printf "Changed filter address to: ${FILTERS_ADDRESS}\n\n"
 fi
 

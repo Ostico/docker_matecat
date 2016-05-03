@@ -1,15 +1,20 @@
+filters:
+  build: ./MateCat-Trusty/MateCatFilters/
+  container_name: docker_matecat_filter
+  ports:
+    - 8732:8732
 redis:
   image: redis
   ports:
     - 6379:6379
 amq:
-  build: ./AMQ/
+  build: ./MateCat-Trusty/AMQ/
   container_name: docker_amq
   ports:
     - 61613:61613
     - 8161:8161
 mysql:
-  build: ./MySQL/
+  build: ./MateCat-Trusty/MySQL/
   container_name: docker_mysql
   ports:
    - 3306:3306
@@ -19,14 +24,12 @@ matecat:
   ## Remove this environment block if you don't need it ##
   environment:
     XDEBUG_CONFIG: 192.168.99.1
-    FILTERS_ADDRESS: http://10.11.1.1/
+    FILTERS_ADDRESS: http://filters:8732/
     SMTP_HOST: 10.30.1.225
     SMTP_PORT: 2637
   ## Remove this environment block if you don't need it ##
-
   volumes:
     - ~/PhpstormProjects/matecat:/var/www/matecat:rw
-    - ~/PhpstormProjects/oauth_config_PRIVATE.ini:/var/www/matecat/inc/oauth_config.ini:rw
   ports:
     - 80:80
     - 7788:7788
@@ -35,3 +38,4 @@ matecat:
     - mysql
     - redis
     - amq
+    - filters
