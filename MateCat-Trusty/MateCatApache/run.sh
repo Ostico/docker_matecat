@@ -27,28 +27,6 @@ if [[ -z "${MATECAT_EXISTS}" ]]; then
 fi
 
 
-# Prepare PHP INI
-sed -ri -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" /etc/php5/apache2/php.ini
-sed -ri -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" /etc/php5/apache2/php.ini
-sed -ri -e "s/^memory_limit.*/memory_limit = ${PHP_MAX_MEMORY}/" /etc/php5/apache2/php.ini
-sed -ri -e "s/^short_open_tag.*/short_open_tag = On/" /etc/php5/apache2/php.ini
-
-# Configure XDebug ( if needed )
-if [[ -n "${XDEBUG_CONFIG}" ]]; then
-    XDEBUG='zend_extension='$(find /usr/lib/php5/ -name xdebug.so)'
-    xdebug.remote_enable=1
-    xdebug.remote_autostart=1
-    xdebug.remote_host="'${XDEBUG_CONFIG}'"
-    xdebug.remote_port=9000
-    xdebug.idekey="storm"'
-
-    printf "${XDEBUG}\n\n"
-    printf "${XDEBUG}" > /etc/php5/conf.d/xdebug.ini
-fi
-
-apache2ctl stop
-echo "Apache Stopped"
-
 # MateCat
 MATECAT_VERSION=$(fgrep '=' ./inc/version.ini | awk '{print $3}')
 cp /tmp/config.ini ./inc/
@@ -108,6 +86,26 @@ chown -R ${USER_OWNER} ./public
 chown -R ${USER_OWNER} ./support_scripts
 chown ${USER_OWNER} ./index.php
 
+## Aache/PHPConfigurations
+# Prepare PHP INI
+sed -ri -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" /etc/php5/apache2/php.ini
+sed -ri -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" /etc/php5/apache2/php.ini
+sed -ri -e "s/^memory_limit.*/memory_limit = ${PHP_MAX_MEMORY}/" /etc/php5/apache2/php.ini
+sed -ri -e "s/^short_open_tag.*/short_open_tag = On/" /etc/php5/apache2/php.ini
+
+# Configure XDebug ( if needed )
+if [[ -n "${XDEBUG_CONFIG}" ]]; then
+    XDEBUG='zend_extension='$(find /usr/lib/php5/ -name xdebug.so)'
+    xdebug.remote_enable=1
+    xdebug.remote_autostart=1
+    xdebug.remote_host="'${XDEBUG_CONFIG}'"
+    xdebug.remote_port=9000
+    xdebug.idekey="PHPSTORM"'
+
+    printf "${XDEBUG}\n\n"
+    printf "${XDEBUG}" > /etc/php5/mods-available/xdebug.ini
+fi
+## Aache/PHPConfigurations
 
 ########### BOOT ANALYSIS
 pushd ./lib/Utils/Analysis
@@ -116,6 +114,7 @@ popd
 
 echo "Starting Apache..."
 /etc/init.d/apache2 restart
+echo "Apache Started"
 
 while true; do
 #    echo date " => Waiting for an infinite. More or less..."
