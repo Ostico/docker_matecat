@@ -44,5 +44,7 @@ COPY my.cnf /etc/mysql/my.cnf
 RUN chown mysql:mysql /etc/mysql/my.cnf
 RUN chmod 660 /etc/mysql/my.cnf
 
+EXPOSE 3306:3306
+
 CMD ["/tmp/run.sh"]
 
