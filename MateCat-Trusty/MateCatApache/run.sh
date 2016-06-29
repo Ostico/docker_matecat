@@ -33,7 +33,7 @@ MATECAT_VERSION=$(fgrep '=' ./inc/version.ini | awk '{print $3}')
 [[ ! -f './nodejs/config.ini' ]] && cp /tmp/node_config.ini ./nodejs/config.ini
 [[ ! -f './inc/oauth_config.ini' ]] && cp /tmp/oauth_config.ini ./inc/
 [[ ! -f './inc/Error_Mail_List.ini' ]] &&  cp /tmp/Error_Mail_List.ini ./inc/
-[[ ! -f './daemons/task_manager_config.ini' ]]  && cp /tmp/task_manager_config.ini ./daemons/
+[[ ! -f './inc/task_manager_config.ini' ]]  && cp /tmp/task_manager_config.ini ./inc/
 
 sed -ri -e "s/X.X.X/${MATECAT_VERSION}/g" ./inc/config.ini
 sed -ri -e "s/_SMTP_HOST_/${SMTP_HOST}/g" ./inc/config.ini
