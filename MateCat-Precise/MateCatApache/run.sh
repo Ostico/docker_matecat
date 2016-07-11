@@ -55,7 +55,7 @@ cp /tmp/config.ini ./inc/
 cp /tmp/node_config.ini ./nodejs/config.ini
 cp /tmp/oauth_config.ini ./inc/
 cp /tmp/Error_Mail_List.ini ./inc/
-cp /tmp/task_manager_config.ini ./daemons/
+cp /tmp/task_manager_config.ini ./inc/
 
 sed -ri -e "s/X.X.X/${MATECAT_VERSION}/g" ./inc/config.ini
 sed -ri -e "s/_SMTP_HOST_/${SMTP_HOST}/g" ./inc/config.ini
