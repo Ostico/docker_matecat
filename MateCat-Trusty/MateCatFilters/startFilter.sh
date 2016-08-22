@@ -19,14 +19,14 @@ if [ ! -d "/var/www/MateCat-Filters/" ]; then
     cp -a /var/www/okapi/MateCat-Filters/target/* /var/www/MateCat-Filters/
 
     echo "Purge Maven"
-    mvn dependency:purge-local-repository -DactTransitively=false -DreResolve=false
+    # mvn dependency:purge-local-repository -DactTransitively=false -DreResolve=false
     rm -rf /var/www/okapi
 fi
 
 echo "Starting Filter\n"
 cd /var/www/MateCat-Filters/
 
-java -cp ".:filters-1.1.3.jar" com.matecat.converter.Main
+java -cp ".:filters-1.1.4.jar" com.matecat.converter.Main
 
 RET=1
 while [[ RET -ne 0 ]]; do
