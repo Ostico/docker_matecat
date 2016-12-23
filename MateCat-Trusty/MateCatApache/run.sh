@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. ./environment_setup.sh
+
 # SSHD server
 /usr/sbin/sshd
 
