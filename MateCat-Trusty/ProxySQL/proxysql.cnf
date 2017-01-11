@@ -134,14 +134,6 @@ mysql_query_rules:
         apply = 1
     },
     {
-        rule_id = 70
-        active = 1
-        username = "admin"
-        match_digest = "^SET .*"
-        destination_hostgroup = 1
-        apply = 1
-    },
-    {
         rule_id = 80
         active = 1
         username = "admin"
