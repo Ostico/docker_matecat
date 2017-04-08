@@ -38,4 +38,5 @@ echo "Please remember to change the above password as soon as possible!"
 echo "MySQL user 'root' has no password but only allows local connections"
 echo "========================================================================"
 
+mysql -uroot -e "RESET MASTER"
 mysqladmin -uroot shutdown

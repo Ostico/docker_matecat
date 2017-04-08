@@ -26,6 +26,10 @@ COPY my.cnf /etc/mysql/my.cnf
 RUN chown mysql:mysql /etc/mysql/my.cnf
 RUN chmod 660 /etc/mysql/my.cnf
 
+COPY auto.cnf /var/lib/mysql/auto.cnf
+RUN chown mysql:mysql /var/lib/mysql/auto.cnf
+RUN chmod 660 /var/lib/mysql/auto.cnf
+
 ENV MYSQL_PASS "admin"
 COPY create_mysql_admin_user.sh /tmp/create_mysql_admin_user.sh
 RUN chmod +x /tmp/create_mysql_admin_user.sh

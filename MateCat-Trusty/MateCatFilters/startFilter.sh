@@ -1,27 +1,35 @@
 #!/bin/bash
 
 if [ ! -d "/var/www/MateCat-Filters/" ]; then
-    echo "Build okapi"
-    git clone https://bitbucket.org/okapiframework/okapi.git /var/www/okapi
-    cd /var/www/okapi/
-    git checkout matecat
-    mvn clean install -DskipTests=true
 
-    echo "build matecat filters layer"
-    git clone https://github.com/matecat/MateCat-Filters.git
-    cd /var/www/okapi/MateCat-Filters/filters
-    mvn clean package -DskipTests=true
+    FILTER_BUILD=$(ls /tmp | grep -E "^filters-[0-9\.]+.jar$")
+    if [ ! -z "${FILTER_BUILD}" ]; then
+        mkdir -p /var/www/MateCat-Filters/
+        mv /tmp/${FILTER_BUILD} /var/www/MateCat-Filters/
+    else
+        echo "No binary found. Build okapi"
+        git clone https://bitbucket.org/okapiframework/okapi.git /var/www/okapi
+        cd /var/www/okapi/
+        git checkout `curl -s https://raw.githubusercontent.com/matecat/MateCat-Filters/master/pom.xml | grep -oP '(?<=<okapi.commit>).*?(?=</okapi.commit>)'`
+        mvn clean install -DskipTests=true
 
-    echo "Setting configurations"
-    cd /var/www/okapi/MateCat-Filters/filters/target
-    cp ../src/main/resources/config.sample.properties config.properties
-    mkdir -p /var/www/MateCat-Filters/
-    cp -a /var/www/okapi/MateCat-Filters/filters/target/* /var/www/MateCat-Filters/
+        echo "build matecat filters layer"
+        git clone https://github.com/matecat/MateCat-Filters.git
+        cd /var/www/okapi/MateCat-Filters/filters
+        mvn clean package -DskipTests=true
 
-    echo "Purge Maven"
-    cd ..
-    mvn dependency:purge-local-repository -DactTransitively=false -DreResolve=false
-    rm -rf /var/www/okapi
+        echo "Setting configurations"
+        cd /var/www/okapi/MateCat-Filters/filters/target
+        cp ../src/main/resources/config.sample.properties config.properties
+        mkdir -p /var/www/MateCat-Filters/
+        cp -a /var/www/okapi/MateCat-Filters/filters/target/* /var/www/MateCat-Filters/
+
+        echo "Purge Maven"
+        cd ..
+        mvn dependency:purge-local-repository -DactTransitively=false -DreResolve=false
+        rm -rf /var/www/okapi
+    fi
+
 fi
 
 echo "Starting Filter\n"
