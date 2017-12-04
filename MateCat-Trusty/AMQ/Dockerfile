@@ -6,7 +6,7 @@ RUN ln -snvf /bin/true /sbin/initctl
 ENV DEBIAN_FRONTEND noninteractive
 
 # Oracle java is bulkier but avoids boot2docker/aufs docker issue 18180
-RUN apt-get install -y software-properties-common python-software-properties && \
+RUN apt-get update && apt-get install -y software-properties-common python-software-properties && \
     add-apt-repository -y ppa:webupd8team/java && \
     apt-get update
 
