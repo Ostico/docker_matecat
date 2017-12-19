@@ -17,13 +17,13 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
-RET=1
-while [[ RET -ne 0 ]]; do
-    echo "=> Waiting for confirmation of MySQL service startup"
-    sleep 5
-    /usr/bin/mysql -uadmin -padmin -e "status" -h mysql2 # > /dev/null 2>&1
-    RET=$?
-done
+#RET=1
+#while [[ RET -ne 0 ]]; do
+#    echo "=> Waiting for confirmation of MySQL service startup"
+#    sleep 5
+#    /usr/bin/mysql -uadmin -padmin -e "status" -h mysql2 # > /dev/null 2>&1
+#    RET=$?
+#done
 
 # set working dir
 cd ${MATECAT_HOME}
@@ -32,19 +32,19 @@ MATECAT_EXISTS=$(mysql -uadmin -padmin -h mysql -e "show databases like 'matecat
 if [[ -z "${MATECAT_EXISTS}" ]]; then
 
     # Get the master GTID
-    MYSQL_MASTER_GTID=`mysql -uadmin -padmin -h mysql -e "SHOW MASTER STATUS" | grep mysql-bin | awk '{print $8}'`
+#    MYSQL_MASTER_GTID=`mysql -uadmin -padmin -h mysql -e "SHOW MASTER STATUS" | grep mysql-bin | awk '{print $8}'`
 
     # Set the slave in read only mode
-    mysql -uadmin -padmin -h mysql2 -e "FLUSH TABLES WITH READ LOCK; SET GLOBAL read_only = ON;"
+#    mysql -uadmin -padmin -h mysql2 -e "FLUSH TABLES WITH READ LOCK; SET GLOBAL read_only = ON;"
 
     #Set Replication
-    echo "#Set Replication"
-    mysql -uadmin -padmin -h mysql2 -e "RESET MASTER"
-    mysql -uadmin -padmin -h mysql2 -e "STOP SLAVE; RESET SLAVE ALL;"
-    mysql -uadmin -padmin -h mysql2 -e "SET GLOBAL gtid_purged=\"${MYSQL_MASTER_GTID}\"";
-    mysql -uadmin -padmin -h mysql2 -e "CHANGE MASTER TO MASTER_HOST=\"mysql\", MASTER_USER=\"admin\", MASTER_PASSWORD=\"admin\", MASTER_AUTO_POSITION = 1; START SLAVE;";
-    sleep 1;
-    printf `mysql -uadmin -padmin -h mysql2 -e "SHOW SLAVE STATUS \G"\n\n`;
+#    echo "#Set Replication"
+#    mysql -uadmin -padmin -h mysql2 -e "RESET MASTER"
+#    mysql -uadmin -padmin -h mysql2 -e "STOP SLAVE; RESET SLAVE ALL;"
+#    mysql -uadmin -padmin -h mysql2 -e "SET GLOBAL gtid_purged=\"${MYSQL_MASTER_GTID}\"";
+#    mysql -uadmin -padmin -h mysql2 -e "CHANGE MASTER TO MASTER_HOST=\"mysql\", MASTER_USER=\"admin\", MASTER_PASSWORD=\"admin\", MASTER_AUTO_POSITION = 1; START SLAVE;";
+#    sleep 1;
+#    printf `mysql -uadmin -padmin -h mysql2 -e "SHOW SLAVE STATUS \G"\n\n`;
 
     # MySql MateCat
     # Creating schema and fill some data
