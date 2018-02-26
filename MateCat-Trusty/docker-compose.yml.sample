@@ -3,11 +3,6 @@ version: '3'
 networks:
   matecat-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.18.1.0/24
-          ip_range: 172.18.1.0/24
-          gateway: 172.18.1.1
 
 services:
   filters:
