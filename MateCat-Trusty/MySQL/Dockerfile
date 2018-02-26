@@ -18,17 +18,9 @@ RUN dpkg -i percona-xtrabackup-24_2.4.5-1.trusty_amd64.deb
 COPY run.sh /tmp/run.sh
 RUN chmod +x /tmp/run.sh
 
-#RUN mkdir -p /var/lib/mysql/binlog
-#RUN chown mysql:mysql /var/lib/mysql/binlog
-#RUN chmod 770 /var/lib/mysql/binlog
-
 COPY my.cnf /etc/mysql/my.cnf
 RUN chown mysql:mysql /etc/mysql/my.cnf
 RUN chmod 660 /etc/mysql/my.cnf
-
-#COPY auto.cnf /var/lib/mysql/auto.cnf
-#RUN chown mysql:mysql /var/lib/mysql/auto.cnf
-#RUN chmod 660 /var/lib/mysql/auto.cnf
 
 ENV MYSQL_PASS "admin"
 COPY create_mysql_admin_user.sh /tmp/create_mysql_admin_user.sh
