@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Executing: mysqld_safe --defaults-file=/etc/mysql/my.cnf --user=mysql --plugin-dir=/usr/lib/mysql/plugin &"
-mysqld_safe --defaults-file=/etc/mysql/my.cnf --user=mysql --plugin-dir=/usr/lib/mysql/plugin &
-
 RET=1
 while [[ RET -ne 0 ]]; do
     echo "=> Waiting for confirmation of MySQL service startup"
@@ -13,7 +10,6 @@ done
 
 ADM_ACCOUNT=`mysql -uroot -e "SELECT * FROM mysql.user WHERE User = 'admin'"`
 if [[ ! -z "${ADM_ACCOUNT}" ]]; then
-    mysqladmin -uroot shutdown
     return 0
 fi
 
@@ -37,5 +33,3 @@ echo ""
 echo "Please remember to change the above password as soon as possible!"
 echo "MySQL user 'root' has no password but only allows local connections"
 echo "========================================================================"
-
-mysqladmin -uroot shutdown
