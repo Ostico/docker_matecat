@@ -4,12 +4,15 @@ RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -snvf /bin/true /sbin/initctl
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
+#RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
+COPY mysql.keyFile.asc /tmp/mysql.keyFile.asc
+RUN gpg --import /tmp/mysql.keyFile.asc
+
 RUN echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" >> /etc/apt/sources.list.d/mysql.list
 RUN echo "deb http://repo.mysql.com/apt/ubuntu/ trusty connector-python-2.0" >> /etc/apt/sources.list.d/mysql.list
 
 RUN apt-get update
-RUN apt-get install -y mysql-server libev4
+RUN apt-get install -y --force-yes mysql-server libev4
 
 WORKDIR /tmp
 RUN wget https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.5/binary/debian/trusty/x86_64/percona-xtrabackup-24_2.4.5-1.trusty_amd64.deb
