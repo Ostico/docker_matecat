@@ -46,7 +46,7 @@ RUN rm -rf ./mod_realdoc
 
 ## Enable MateCat site
 COPY 000-matecat.conf /etc/apache2/sites-enabled/000-matecat.conf
-RUN a2enmod rewrite filter deflate headers expires proxy_http
+RUN a2enmod rewrite filter deflate headers expires proxy_http mod_ssl
 
 # Start app_configslication
 COPY environment_setup.sh /tmp/environment_setup.sh
