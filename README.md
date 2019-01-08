@@ -1,6 +1,8 @@
 # docker_matecat
 Dockerization of the MateCat web CatTool https://github.com/matecat/MateCat
 
+This docker is not meant to be used in production as is, but only to try the software and for development.
+
 ## Prerequisites
 
 - To use this Installation you must **TURN OFF** these local services if you have already installed them:

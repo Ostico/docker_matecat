@@ -37,7 +37,7 @@ RUN useradd -ms /bin/bash -g www-data www-data
 
 ## ENABLE Deployment utils ( apache follows symbolic links to DocumentRoot )
 RUN apt-get update
-RUN apt-get install -y apache2-prefork-dev php5-dev
+RUN apt-get install -y apache2-prefork-dev php5-dev php5-mcrypt
 RUN git clone https://github.com/etsy/mod_realdoc.git
 WORKDIR "/mod_realdoc"
 RUN apxs2 -i -a -c mod_realdoc.c
@@ -46,7 +46,8 @@ RUN rm -rf ./mod_realdoc
 
 ## Enable MateCat site
 COPY 000-matecat.conf /etc/apache2/sites-enabled/000-matecat.conf
-RUN a2enmod rewrite filter deflate headers expires proxy_http
+RUN a2enmod rewrite filter deflate headers expires proxy_http mod_ssl
+RUN php5enmod mcrypt
 
 # Start app_configslication
 COPY environment_setup.sh /tmp/environment_setup.sh
