@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 
 networks:
   matecat-network:
@@ -89,8 +89,10 @@ services:
 
     volumes:
       - /var/www/matecat:/var/www/matecat:rw
+      - /var/www/matecat/storage/files_storage:/var/www/matecat/storage/files_storage:rw,rslave
     ports:
       - 80:80
+      - 443:443
       - 7788:7788
       - 22
     networks:
