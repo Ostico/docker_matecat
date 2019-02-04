@@ -46,7 +46,11 @@ RUN rm -rf ./mod_realdoc
 
 ## Enable MateCat site
 COPY 000-matecat.conf /etc/apache2/sites-enabled/000-matecat.conf
-RUN a2enmod rewrite filter deflate headers expires proxy_http mod_ssl
+COPY 443-matecat.conf /etc/apache2/sites-enabled/443-matecat.conf
+RUN mkdir /etc/apache2/ssl-cert/
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl-cert/my_matecat.key -out /etc/apache2/ssl-cert/my_matecat.crt
+
+RUN a2enmod rewrite filter deflate headers expires proxy_http ssl
 RUN php5enmod mcrypt
 
 # Start app_configslication
