@@ -1,8 +1,14 @@
 FROM ubuntu:trusty
 
 RUN apt-get update
-RUN apt-get -y --fix-missing install ssh-client vim locate iputils-ping monit git curl wget net-tools \
-    apache2 php5 php5-json php5-curl php5-xdebug php5-mysql mysql-client openssh-server psmisc screen dstat \
+RUN apt-get install -y software-properties-common
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/apache2
+RUN apt-get update
+RUN apt-get -y --fix-missing install ssh-client vim locate iputils-ping monit git curl wget net-tools tree \
+    apache2 apache2-dev libapache2-mod-php5.6 \
+    php5.6 php5.6-json php5.6-curl php5.6-xdebug php5.6-mysql php5.6-dev php5.6-mcrypt php5.6-redis \
+    mysql-client openssh-server psmisc screen dstat \
     traceroute whois libaio1 perl perl-base perl-modules \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
