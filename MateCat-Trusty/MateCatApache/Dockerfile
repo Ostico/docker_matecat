@@ -18,12 +18,6 @@ COPY ./app_configs/Error_Mail_List.ini /tmp/Error_Mail_List.ini
 
 COPY ./app_configs/task_manager_config.ini /tmp/task_manager_config.ini
 
-# NodeJs
-COPY ./node-install.sh /tmp/node-install.sh
-RUN chmod +x /tmp/node-install.sh
-RUN /tmp/node-install.sh
-RUN rm /tmp/node-install.sh
-
 # Monit
 COPY monitrc /etc/monit/monitrc
 
@@ -35,9 +29,11 @@ RUN userdel www-data
 RUN groupadd www-data
 RUN useradd -ms /bin/bash -g www-data www-data
 
+RUN sed -i 's/session.save_handler\s*=\s*files/session.save_handler = redis/' /etc/php/5.6/apache2/php.ini
+RUN echo 'session.save_path = "tcp://redis:6379?database=15"' >> /etc/php/5.6/apache2/php.ini
+
+
 ## ENABLE Deployment utils ( apache follows symbolic links to DocumentRoot )
-RUN apt-get update
-RUN apt-get install -y apache2-prefork-dev php5-dev php5-mcrypt
 RUN git clone https://github.com/etsy/mod_realdoc.git
 WORKDIR "/mod_realdoc"
 RUN apxs2 -i -a -c mod_realdoc.c
@@ -45,13 +41,21 @@ WORKDIR "/"
 RUN rm -rf ./mod_realdoc
 
 ## Enable MateCat site
-COPY 000-matecat.conf /etc/apache2/sites-enabled/000-matecat.conf
-RUN a2enmod rewrite filter deflate headers expires proxy_http mod_ssl
-RUN php5enmod mcrypt
+COPY data/ /
 
-# Start app_configslication
-COPY environment_setup.sh /tmp/environment_setup.sh
-RUN chmod +x /tmp/environment_setup.sh
+RUN a2enmod rewrite filter deflate headers expires proxy_http ssl php5.6
+RUN phpenmod mcrypt
+
+# Set XDebug
+COPY x_debug_setup.sh /tmp/x_debug_setup.sh
+RUN chmod +x /tmp/x_debug_setup.sh
+RUN /tmp/x_debug_setup.sh
+
+# NodeJs
+COPY ./node-install.sh /tmp/node-install.sh
+RUN chmod +x /tmp/node-install.sh
+RUN /tmp/node-install.sh
+RUN rm /tmp/node-install.sh
 
 COPY run.sh /tmp/run.sh
 RUN chmod +x /tmp/run.sh

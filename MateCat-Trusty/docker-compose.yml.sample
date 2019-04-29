@@ -1,13 +1,8 @@
-version: '2'
+version: '3.2'
 
 networks:
   matecat-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.18.1.0/24
-          ip_range: 172.18.1.0/24
-          gateway: 172.18.1.1
 
 services:
   filters:
@@ -57,6 +52,7 @@ services:
       - ~/PhpstormProjects/matecat:/var/www/matecat:rw
     ports:
       - 80:80
+      - 443:443
       - 7788:7788
       - 22
     networks:

@@ -67,6 +67,6 @@ sftp-config.json
 Session.vim
 .netrwhist
 *~
-
+.directory
 docker-compose.yml
 oauth_config.ini
