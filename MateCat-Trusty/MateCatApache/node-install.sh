@@ -6,7 +6,7 @@ sh -c 'echo "Got Root!"'
 
 echo "Get Latest Version Number..."
 {
-wget --output-document=node-updater.html https://nodejs.org/dist/latest/
+wget --output-document=node-updater.html https://nodejs.org/dist/v9.11.2/
 
 ARCH=$(uname -m)
 
@@ -31,7 +31,7 @@ DIR=$( cd "$( dirname $0 )" && pwd )
 echo "Downloading latest stable Version $VER..."
 {
 echo "wget https://nodejs.org/dist/latest/$VER -O $DIR/$VER"
-wget https://nodejs.org/dist/latest/$VER -O $DIR/$VER
+wget https://nodejs.org/dist/v9.11.2/$VER -O $DIR/$VER
 } # &> /dev/null
 
 echo "Done"

@@ -18,12 +18,6 @@ COPY ./app_configs/Error_Mail_List.ini /tmp/Error_Mail_List.ini
 
 COPY ./app_configs/task_manager_config.ini /tmp/task_manager_config.ini
 
-# NodeJs
-COPY ./node-install.sh /tmp/node-install.sh
-RUN chmod +x /tmp/node-install.sh
-RUN /tmp/node-install.sh
-RUN rm /tmp/node-install.sh
-
 # Monit
 COPY monitrc /etc/monit/monitrc
 
@@ -52,9 +46,16 @@ COPY data/ /
 RUN a2enmod rewrite filter deflate headers expires proxy_http ssl php5.6
 RUN phpenmod mcrypt
 
-# Start app_configslication
-COPY environment_setup.sh /tmp/environment_setup.sh
-RUN chmod +x /tmp/environment_setup.sh
+# Set XDebug
+COPY x_debug_setup.sh /tmp/x_debug_setup.sh
+RUN chmod +x /tmp/x_debug_setup.sh
+RUN /tmp/x_debug_setup.sh
+
+# NodeJs
+COPY ./node-install.sh /tmp/node-install.sh
+RUN chmod +x /tmp/node-install.sh
+RUN /tmp/node-install.sh
+RUN rm /tmp/node-install.sh
 
 COPY run.sh /tmp/run.sh
 RUN chmod +x /tmp/run.sh

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-. ./environment_setup.sh
-
 # MySQL
 RET=1
 while [[ RET -ne 0 ]]; do
