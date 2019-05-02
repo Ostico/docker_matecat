@@ -40,6 +40,11 @@ RUN apxs2 -i -a -c mod_realdoc.c
 WORKDIR "/"
 RUN rm -rf ./mod_realdoc
 
+# Filebeat
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.0.1-amd64.deb
+RUN dpkg -i filebeat-7.0.1-amd64.deb
+RUN chmod go-w /etc/filebeat/filebeat.yml
+
 ## Enable MateCat site
 COPY data/ /
 
