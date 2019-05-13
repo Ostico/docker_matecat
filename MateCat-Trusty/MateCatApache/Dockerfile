@@ -18,9 +18,6 @@ COPY ./app_configs/Error_Mail_List.ini /tmp/Error_Mail_List.ini
 
 COPY ./app_configs/task_manager_config.ini /tmp/task_manager_config.ini
 
-# Monit
-COPY monitrc /etc/monit/monitrc
-
 # Apache
 RUN mkdir /var/log/apache2/matecat/
 RUN rm -rf /etc/apache2/sites-available/default
