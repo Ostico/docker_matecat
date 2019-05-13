@@ -1,5 +1,8 @@
 FROM ostico/trusty-base:latest
 
+RUN locale-gen en_US.UTF-8
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
 ENV JAVA_OPTS '-Xmx256M'
 RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -snvf /bin/true /sbin/initctl
