@@ -1,10 +1,15 @@
-FROM maven:3.3.3-jdk-8
+FROM ostico/trusty-base:latest
+
+RUN locale-gen en_US.UTF-8
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN apt-get update
-RUN apt-get install -y git
+RUN apt-get install -y git software-properties-common python-software-properties && \
+    add-apt-repository -y ppa:openjdk-r/ppa && \
+    apt-get update
+RUN apt-get install -y --force-yes openjdk-8-jre
 
-COPY filters-1.2.2.jar /tmp/filters-1.2.2.jar
-CMD ["/tmp/startFilter.sh"]
+COPY data /
 
 COPY startFilter.sh /tmp/startFilter.sh
 RUN chmod +x /tmp/startFilter.sh
