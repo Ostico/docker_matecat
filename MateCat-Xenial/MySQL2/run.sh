@@ -1,1 +1,0 @@
-../MySQL/run.sh

@@ -35,40 +35,13 @@ services:
     build: ./MySQL/
     container_name: docker_mysql
     ports:
-     - 3307:3306
+     - 3306:3306
     volumes:
       - /var/www/temporary_docker_mount_volume:/mnt/external_volume:rw
     networks:
       matecat-network:
         aliases:
           - mysql
-
-  mysql2:
-    build: ./MySQL2/
-    container_name: docker_mysql2
-    ports:
-     - 3308:3306
-    volumes:
-      - /var/www/temporary_docker_mount_volume:/mnt/external_volume:rw
-    networks:
-      matecat-network:
-        aliases:
-          - mysql2
-
-  proxysql:
-    build: ./ProxySQL/
-    container_name: docker_proxysql
-    ports:
-      - 6033:6033
-      - 6032:6032
-      - 3306:3306
-    links:
-      - mysql
-      - mysql2
-    volumes:
-      - /var/www/temporary_docker_mount_volume:/mnt/external_volume:rw
-    networks:
-       - matecat-network
 
   matecat:
     build: ./MateCatApache/
@@ -91,9 +64,7 @@ services:
     networks:
        - matecat-network
     links:
-      - proxysql
       - mysql
-      - mysql2
       - redis
       - amq
       - filters
