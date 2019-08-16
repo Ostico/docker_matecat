@@ -13,14 +13,18 @@ if [ ! -d "/var/www/MateCat-Filters/" ]; then
         git checkout `curl -s https://raw.githubusercontent.com/matecat/MateCat-Filters/master/pom.xml | grep -oP '(?<=<okapi.commit>).*?(?=</okapi.commit>)'`
         mvn clean install -DskipTests=true
 
-        echo "build matecat filters layer"
+        echo "clone the repo"
         git clone https://github.com/matecat/MateCat-Filters.git
+
+        echo "Setting configurations"
+        cd /var/www/okapi/MateCat-Filters/filters/src/main/resources
+        mv config.sample.properties config.properties
+
+        echo "build matecat filters layer"
         cd /var/www/okapi/MateCat-Filters/filters
         mvn clean package -DskipTests=true
 
-        echo "Setting configurations"
-        cd /var/www/okapi/MateCat-Filters/filters/target
-        cp ../src/main/resources/config.sample.properties config.properties
+        echo "copy artifact"
         mkdir -p /var/www/MateCat-Filters/
         cp -a /var/www/okapi/MateCat-Filters/filters/target/* /var/www/MateCat-Filters/
 
