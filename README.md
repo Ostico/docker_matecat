@@ -33,10 +33,7 @@ cd /your/preferred/docker_matecat_path
 git clone https://github.com/Ostico/docker_matecat.git
 ```
 
-- Go inside this new directory, copy ```docker-compose.yml.sample``` to ```docker-compose.yml```
-```bash
-cp docker-compose.yml.sample docker-compose.yml
-```
+- Go inside this new directory there is a folder named `MateCat-Xenial`
 
 ##### Mounted volumes ( MateCat application )
 - Modify ```docker-compose.yml``` file and change the path of the matecat directory to which you just cloned in this example.
@@ -54,7 +51,11 @@ cp docker-compose.yml.sample docker-compose.yml
 ```
   ## Remove this environment block if you don't need it ##
   environment:
+  
+    ### FOR MAC OS USERS YOU MUST USE 192.168.1.1 
+    ### AND ADD AN ALIAS ON YOUR lo0: ` sudo ifconfig lo0 alias 192.168.1.1 `
     XDEBUG_CONFIG: {{REMOVE THIS ROW OR INSERT YOUR HOST IP}}
+    
     FILTERS_ADDRESS: {{REMOVE THIS ROW OR INSERT YOUR CUSTOM FILTERS ADDRESS}}
     SMTP_HOST: {{REMOVE THIS ROW OR INSERT YOUR SMTP}}
     SMTP_PORT: {{REMOVE THIS ROW OR INSERT SMTP PORT}}

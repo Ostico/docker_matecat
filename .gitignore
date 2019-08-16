@@ -68,6 +68,5 @@ Session.vim
 .netrwhist
 *~
 .directory
-docker-compose.yml
 oauth_config.ini
 MateCat-Xenial/MateCatApache/data/etc/letsencrypt
