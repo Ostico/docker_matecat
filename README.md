@@ -63,7 +63,7 @@ git clone https://github.com/Ostico/docker_matecat.git
 ```
 
 #### Further MateCat configurations ( Advanced users )
-More specific configurations can be made directly into your ```docker_matecat/MatecatApache/config.ini``` before docker starts the installation.
+More specific configurations can be made directly into your ```docker_matecat/MatecatApache/app_configs/config.ini``` before docker starts the installation.
 
 Ex: 
 ```
