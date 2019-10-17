@@ -9,49 +9,11 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
-RET=1
-while [[ RET -ne 0 ]]; do
-    echo "=> Waiting for confirmation of MySQL service startup"
-    sleep 5
-    /usr/bin/mysql -uadmin -padmin -e "status" -h mysql2 # > /dev/null 2>&1
-    RET=$?
-done
-
 # set working dir
 cd ${MATECAT_HOME}
 
 MATECAT_EXISTS=$(mysql -uadmin -padmin -h mysql -e "show databases like 'matecat%'")
 if [[ -z "${MATECAT_EXISTS}" ]]; then
-
-    RET=1
-    while [[ RET -ne 0 ]]; do
-
-        # Get the master GTID
-        mysql -uadmin -padmin -h mysql -e "CREATE DATABASE test;"
-        mysql -uadmin -padmin -h mysql -e "DROP DATABASE test;"
-        sleep 2;
-
-        echo "=> Waiting for confirmation of MySQL Master ready"
-        MYSQL_MASTER_GTID=$(mysql -uadmin -padmin -h mysql -e "SHOW MASTER STATUS\G" | grep -i "Executed_Gtid_Set:" | awk '{print $2}')
-        printf "*** MYSQL_MASTER_GTID: ${MYSQL_MASTER_GTID} \n\n"
-
-        if [[ -n "${MYSQL_MASTER_GTID}" ]]; then
-            RET=0
-        fi
-
-    done
-
-    #Set Replication
-    echo "#Set Replication"
-    mysql -uadmin -padmin -h mysql2 -e "RESET MASTER"
-    mysql -uadmin -padmin -h mysql2 -e "STOP SLAVE; RESET SLAVE ALL;"
-    mysql -uadmin -padmin -h mysql2 -e "SET GLOBAL gtid_purged=\"${MYSQL_MASTER_GTID}\" ;"
-    mysql -uadmin -padmin -h mysql2 -e "CHANGE MASTER TO MASTER_HOST=\"mysql\", MASTER_USER=\"admin\", MASTER_PASSWORD=\"admin\", MASTER_AUTO_POSITION = 1; START SLAVE;";
-
-    sleep 1;
-    SLAVE_STATUS=$(mysql -uadmin -padmin -h mysql2 -e "SHOW SLAVE STATUS \G")
-    printf "${SLAVE_STATUS} \n\n"
-    sleep 5;
 
     # MySql MateCat
     # Creating schema and fill some data

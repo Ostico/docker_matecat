@@ -13,6 +13,8 @@ find . -type d | xargs chmod 770
 find . -type f | xargs chmod 660
 popd
 
+find /var/lib/mysql -type f -exec touch {} \; 
+
 echo "Executing: mysqld_safe --defaults-file=/etc/mysql/my.cnf --user=mysql --plugin-dir=/usr/lib/mysql/plugin"
 mysqld_safe --defaults-file=/etc/mysql/my.cnf --user=mysql --plugin-dir=/usr/lib/mysql/plugin &
 

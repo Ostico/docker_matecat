@@ -37,7 +37,7 @@ services:
     ports:
      - 3306:3306
     volumes:
-      - /var/www/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /Users/hashashiyyin/PhpstormProjects/temprary_docker_mount_volume:/mnt/external_volume:rw
     networks:
       matecat-network:
         aliases:
@@ -48,15 +48,16 @@ services:
     container_name: docker_matecat
     ## Remove this environment block if you don't need it ##
     environment:
-      XDEBUG_CONFIG: 172.17.0.1
+      XDEBUG_CONFIG: 192.168.1.1
       FILTERS_ADDRESS: http://filters:8732/
       SMTP_HOST: 10.30.1.225
       SMTP_PORT: 2637
     ## Remove this environment block if you don't need it ##
 
     volumes:
-      - /var/www/matecat:/var/www/matecat:rw
-      - /var/www/matecat/storage/files_storage:/var/www/matecat/storage/files_storage:rw,rslave
+      - /Users/hashashiyyin/PhpstormProjects/temprary_docker_mount_volume:/mnt/external_volume:rw
+      - /Users/hashashiyyin/PhpstormProjects/MateCat:/var/www/matecat:rw
+      - /Users/hashashiyyin/PhpstormProjects/MateCat/storage/files_storage:/var/www/matecat/storage/files_storage:rw,rslave
     ports:
       - 80:80
       - 443:443
