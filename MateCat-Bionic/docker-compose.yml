@@ -1,0 +1,99 @@
+version: '3.2'
+
+networks:
+  matecat-network:
+    driver: bridge
+
+services:
+  filters:
+    build: ./MateCatFilters/
+    container_name: docker_bionic_matecat_filter
+    ports:
+      - 8732:8732
+    networks:
+       - matecat-network
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+       - matecat-network
+
+  amq:
+    build: ./AMQ/
+    container_name: docker_bionic_amq
+    ports:
+      - 61613:61613
+      - 8161:8161
+    networks:
+      matecat-network:
+        aliases:
+          - amq
+
+  mysql:
+    build: ./MySQL/
+    container_name: docker_bionic_mysql
+    ports:
+     - 3307:3306
+    volumes:
+      - /var/www/temporary_docker_mount_volume:/mnt/external_volume:rw
+    networks:
+      matecat-network:
+        aliases:
+          - mysql
+
+  mysql2:
+    build: ./MySQL2/
+    container_name: docker_bionic_mysql2
+    ports:
+     - 3308:3306
+    volumes:
+      - /var/www/temporary_docker_mount_volume:/mnt/external_volume:rw
+    networks:
+      matecat-network:
+        aliases:
+          - mysql2
+
+  proxysql:
+    build: ./ProxySQL/
+    container_name: docker_bionic_proxysql
+    ports:
+      - 6033:6033
+      - 6032:6032
+      - 3306:3306
+    links:
+      - mysql
+      - mysql2
+    volumes:
+      - /var/www/temporary_docker_mount_volume:/mnt/external_volume:rw
+    networks:
+       - matecat-network
+
+  matecat:
+    build: ./MateCatApache/
+    container_name: docker_bionic_matecat
+    ## Remove this environment block if you don't need it ##
+    environment:
+      XDEBUG_CONFIG: 172.17.0.1
+      FILTERS_ADDRESS: http://filters:8732/
+      SMTP_HOST: 10.30.1.225
+      SMTP_PORT: 2637
+    ## Remove this environment block if you don't need it ##
+
+    volumes:
+      - /var/www/matecat:/var/www/matecat:rw
+      - /var/www/matecat/storage/files_storage:/var/www/matecat/storage/files_storage:rw,rslave
+    ports:
+      - 80:80
+      - 443:443
+      - 7788:7788
+    networks:
+       - matecat-network
+    links:
+      - proxysql
+      - mysql
+      - mysql2
+      - redis
+      - amq
+      - filters
