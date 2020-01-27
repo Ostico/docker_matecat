@@ -19,7 +19,7 @@ RUN apt-get update
 RUN apt-get install -y  mysql-server libev4 libgcrypt11-dev libcurl4-openssl-dev libdbd-mysql-perl
 
 WORKDIR /tmp
-RUN wget https://www.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0-7/binary/debian/xenial/x86_64/percona-xtrabackup-80_8.0.7-1.xenial_amd64.deb
+RUN wget https://www.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.7/binary/debian/xenial/x86_64/percona-xtrabackup-80_8.0.7-1.xenial_amd64.deb
 RUN dpkg -i percona-xtrabackup-80_8.0.7-1.xenial_amd64.deb
 
 COPY run.sh /tmp/run.sh
