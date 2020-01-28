@@ -15,8 +15,10 @@ popd
 
 find /var/lib/mysql -type f -exec touch {} \; 
 
-echo "Executing: mysqld_safe --defaults-file=/etc/mysql/my.cnf --user=mysql --plugin-dir=/usr/lib/mysql/plugin"
-mysqld_safe --defaults-file=/etc/mysql/my.cnf --user=mysql --plugin-dir=/usr/lib/mysql/plugin &
+cmd="mysqld_safe --defaults-file=/etc/mysql/my.cnf --user=mysql --plugin-dir=/usr/lib/mysql/plugin &"
+echo "Executing: $cmd"
+
+eval $cmd
 
 source /tmp/create_mysql_admin_user.sh
 

@@ -41,9 +41,3 @@ cd /var/www/MateCat-Filters/
 
 FILTER_BUILD=$(ls | grep -E "^filters-[0-9\.]+.jar$")
 java -cp ".:${FILTER_BUILD}" com.matecat.converter.Main
-
-RET=1
-while [[ RET -ne 0 ]]; do
-    # echo "=> Waiting an infinite loop ..."
-    sleep 5
-done
