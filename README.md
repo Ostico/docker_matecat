@@ -4,8 +4,10 @@ Dockerization of the MateCat web CatTool https://github.com/matecat/MateCat
 This docker is not meant to be used in production as is, but only to try the software and for development.
 
 ## Prerequisites
+This binds on local ports like 8732, 3306, 6379, 8161, 61613, 80, 443, 7788.
 
-- To use this Installation you must **TURN OFF** these local services if you have already installed them:
+
+- To use this Installation you must **TURN OFF** following local services (if you already have them):
   * ActiveMQ
   * Redis Server
   * Apache Server
@@ -25,9 +27,10 @@ This docker is not meant to be used in production as is, but only to try the sof
 cd /your/preferred/installation/path
 git clone https://github.com/matecat/MateCat.git
 ```
+Create the ini config files in `MateCat/inc` directory. You can use the samples available.  
 
 #### docker_matecat Repository
-- Clone ```docker_matecat``` in another directory
+- Clone `docker_matecat` in another directory
 ```bash
 cd /your/preferred/docker_matecat_path
 git clone https://github.com/Ostico/docker_matecat.git
@@ -36,18 +39,18 @@ git clone https://github.com/Ostico/docker_matecat.git
 - Go inside this new directory there is a folder named `MateCat-Xenial`
 
 ##### Mounted volumes ( MateCat application )
-- Modify ```docker-compose.yml``` file and change the path of the matecat directory to which you just cloned in this example.
+- Modify `docker-compose.yml` file and change the path of the matecat directory to which you just cloned in this example.
 
 ```
   volumes:
     - ~/your/preferred/installation/path/MateCat:/var/www/matecat:rw
 ```
 
-##### Environment ( optional, remove what you do not need )
+##### docker-compose Environment ( optional, remove what you do not need )
 - Configure XDEBUG if you need it or remove it from the environment variables.
 - Configure your SMTP relay host ip/domain and port if you need them or remove from environment variables.
 - Configure the url for your custom filters or remove the key to leave the default [translated-matecat-filters](https://translated-matecat-filters-v1.p.mashape.com)
-- If you remove all keys, you must delete the ```environment:``` also.
+- If you remove all keys, you must delete the `environment:` also.
 ```
   ## Remove this environment block if you don't need it ##
   environment:
@@ -62,8 +65,8 @@ git clone https://github.com/Ostico/docker_matecat.git
   ## Remove this environment block if you don't need it ##
 ```
 
-#### Further MateCat configurations ( Advanced users )
-More specific configurations can be made directly into your ```docker_matecat/MatecatApache/app_configs/config.ini``` before docker starts the installation.
+#### Further MateCat configurations ( Advanced users, not really needed for the average user )
+More specific configurations can be made directly into your `docker_matecat/MatecatApache/app_configs/config.ini` before docker starts the installation.
 
 Ex: 
 ```
@@ -72,10 +75,9 @@ Ex:
 
 
 #### Start Docker
-- Start docker-compose
+- Start docker-compose:
 ```bash
-cd /your/preferred/docker_matecat_path
-docker-compose up
+docker-compose up -d
 ```
 
 #### To enable the Google+ login in MateCat
