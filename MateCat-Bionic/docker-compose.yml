@@ -6,7 +6,7 @@ networks:
 
 services:
   filters:
-    image: matecat-filters
+    image: aijanai/matecat-filters
     ports:
       - 8732:8732
     networks:
@@ -20,7 +20,7 @@ services:
        - matecat-network
 
   amq:
-    image: matecat-amq
+    image: aijanai/matecat-amq
     ports:
       - 61613:61613
       - 8161:8161
@@ -30,7 +30,7 @@ services:
           - amq
 
   mysql:
-    image: matecat-mysql
+    image: aijanai/matecat-mysql
     ports:
      - 3307:3306
     networks:
@@ -39,7 +39,7 @@ services:
           - mysql
 
   matecat:
-    image: matecat-multipurpose:2
+    image: aijanai/matecat-multipurpose:2
     ## Remove this environment block if you don't need it ##
     environment:
       #XDEBUG_CONFIG: docker.for.mac.localhost
@@ -66,7 +66,7 @@ services:
       - filters
 
   matecat-tm-daemon:
-    image: matecat-multipurpose:2
+    image: aijanai/matecat-multipurpose:2
     environment:
       #XDEBUG_CONFIG: docker.for.mac.localhost
       FILTERS_ADDRESS: http://filters:8732/
@@ -88,7 +88,7 @@ services:
       - matecat
 
   matecat-fast-daemon:
-    image: matecat-multipurpose:2
+    image: aijanai/matecat-multipurpose:2
     environment:
       #XDEBUG_CONFIG: docker.for.mac.localhost
       FILTERS_ADDRESS: http://filters:8732/
