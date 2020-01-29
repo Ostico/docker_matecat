@@ -31,6 +31,8 @@ fi
 # set configurations
 MATECAT_VERSION=$(fgrep '=' ./inc/version.ini | awk '{print $3}')
 
+sed -ri -e "s/^OAUTH_CLIENT_ID.*/OAUTH_CLIENT_ID = \"${OAUTH_CLIENT_ID}\"/g" ./inc/oauth_config.ini
+sed -ri -e "s/^OAUTH_CLIENT_SECRET.*/OAUTH_CLIENT_SECRET = \"${OAUTH_CLIENT_SECRET}\"/g" ./inc/oauth_config.ini
 sed -ri -e "s/^BUILD_NUMBER = .*/BUILD_NUMBER = \"${MATECAT_VERSION}\"/g" ./inc/config.ini
 sed -ri -e "s/^SMTP_HOST = .*/SMTP_HOST = \"${SMTP_HOST}\"/g" ./inc/config.ini
 sed -ri -e "s/^Host = .*/Host = \"${SMTP_HOST}\"/g" ./inc/Error_Mail_List.ini
