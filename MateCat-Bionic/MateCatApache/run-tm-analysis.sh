@@ -28,10 +28,6 @@ if [[ -n "${FILTERS_ADDRESS}" ]]; then
 fi
 
 chown -R ${USER_OWNER} ./inc
-chown -R ${USER_OWNER} ./lib
-chown -R ${USER_OWNER} ./public
-chown -R ${USER_OWNER} ./support_scripts
-chown ${USER_OWNER} ./index.php
 
 ## Aache/PHPConfigurations
 # Prepare PHP INI

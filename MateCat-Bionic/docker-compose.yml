@@ -39,7 +39,7 @@ services:
           - mysql
 
   matecat:
-    image: aijanai/matecat-multipurpose:2
+    image: aijanai/matecat-multipurpose
     ## Remove this environment block if you don't need it ##
     environment:
       #XDEBUG_CONFIG: docker.for.mac.localhost
@@ -52,7 +52,7 @@ services:
     command: ["/run-matecat.sh"]
 
     volumes:
-      - /Users/albertomassidda/matecat_local_storage:/var/www/matecat/local_storage:rw
+      - /home/ai_ja_nai/matecat_local_storage:/var/www/matecat/local_storage:rw
     ports:
       - 80:80
       - 443:443
@@ -66,7 +66,7 @@ services:
       - filters
 
   matecat-tm-daemon:
-    image: aijanai/matecat-multipurpose:2
+    image: aijanai/matecat-multipurpose
     environment:
       #XDEBUG_CONFIG: docker.for.mac.localhost
       FILTERS_ADDRESS: http://filters:8732/
@@ -77,7 +77,7 @@ services:
     command: ["/run-tm-analysis.sh"]
 
     volumes:
-      - /Users/albertomassidda/matecat_local_storage:/var/www/matecat/local_storage:rw
+      - /home/ai_ja_nai/matecat_local_storage:/var/www/matecat/local_storage:rw
     networks:
        - matecat-network
     links:
@@ -88,7 +88,7 @@ services:
       - matecat
 
   matecat-fast-daemon:
-    image: aijanai/matecat-multipurpose:2
+    image: aijanai/matecat-multipurpose
     environment:
       #XDEBUG_CONFIG: docker.for.mac.localhost
       FILTERS_ADDRESS: http://filters:8732/
@@ -99,7 +99,7 @@ services:
     command: ["/run-fast-analysis.sh"]
 
     volumes:
-      - /Users/albertomassidda/matecat_local_storage:/var/www/matecat/local_storage:rw
+      - /home/ai_ja_nai/matecat_local_storage:/var/www/matecat/local_storage:rw
     networks:
        - matecat-network
     links:
