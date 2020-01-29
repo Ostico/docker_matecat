@@ -47,6 +47,7 @@ services:
       #FILTERS_ADDRESS: "https://translated-matecat-filters-v1.p.mashape.com"
       #SMTP_HOST: 10.30.1.225
       #SMTP_PORT: 2637
+      ENABLE_OUTSOURCE: "false"
     ## Remove this environment block if you don't need it ##
     
     command: ["/run-matecat.sh"]
