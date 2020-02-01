@@ -41,6 +41,11 @@ docker-compose exec mysql ./create_mysql_admin_user.sh
 docker-compose up -d
 ```
 
+This development version works on "dev.matecat.com". Please add that domain to your /etc/hosts file:
+```
+127.0.0.1 dev.matecat.com
+```
+
 ##### docker-compose Environment ( optional, remove what you do not need )
 - Configure XDEBUG if you need it or remove it from the environment variables.
 - Configure your SMTP relay host ip/domain and port if you need them or remove from environment variables.
