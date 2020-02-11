@@ -6,8 +6,7 @@ networks:
 
 services:
   filters:
-    build: ./MateCatFilters/
-    container_name: docker_bionic_matecat_filter
+    image: aijanai/matecat-filters
     ports:
       - 8732:8732
     networks:
@@ -21,8 +20,7 @@ services:
        - matecat-network
 
   amq:
-    build: ./AMQ/
-    container_name: docker_bionic_amq
+    image: aijanai/matecat-amq
     ports:
       - 61613:61613
       - 8161:8161
@@ -32,32 +30,30 @@ services:
           - amq
 
   mysql:
-    build: ./MySQL/
-    container_name: docker_bionic_mysql
+    image: aijanai/matecat-mysql
     ports:
      - 3307:3306
-    volumes:
-      - /Users/hashashiyyin/PhpstormProjects/temprary_docker_mount_volume:/mnt/external_volume:rw
     networks:
       matecat-network:
         aliases:
           - mysql
 
   matecat:
-    build: ./MateCatApache/
-    container_name: docker_bionic_matecat
+    image: aijanai/matecat-multipurpose:3
     ## Remove this environment block if you don't need it ##
     environment:
-      XDEBUG_CONFIG: 192.168.1.1
+      #XDEBUG_CONFIG: docker.for.mac.localhost
       FILTERS_ADDRESS: http://filters:8732/
-      SMTP_HOST: 10.30.1.225
-      SMTP_PORT: 2637
+      #FILTERS_ADDRESS: "https://translated-matecat-filters-v1.p.mashape.com"
+      #SMTP_HOST: 10.30.1.225
+      #SMTP_PORT: 2637
+      ENABLE_OUTSOURCE: "false"
     ## Remove this environment block if you don't need it ##
+    
+    command: ["/run-matecat.sh"]
 
     volumes:
-      - /Users/hashashiyyin/PhpstormProjects/temprary_docker_mount_volume:/mnt/external_volume:rw
-      - /Users/hashashiyyin/PhpstormProjects/MateCat:/var/www/matecat:rw
-      - /Users/hashashiyyin/PhpstormProjects/MateCat/storage/files_storage:/var/www/matecat/storage/files_storage:rw
+      - /Users/albertomassidda/matecat_local_storage:/var/www/matecat/local_storage:rw
     ports:
       - 80:80
       - 443:443
@@ -69,3 +65,35 @@ services:
       - redis
       - amq
       - filters
+
+  matecat-tm-daemon:
+    image: aijanai/matecat-multipurpose:3
+
+    command: ["/run-tm-analysis.sh"]
+
+    volumes:
+      - /Users/albertomassidda/matecat_local_storage:/var/www/matecat/local_storage:rw
+    networks:
+       - matecat-network
+    links:
+      - mysql
+      - redis
+      - amq
+      - filters
+      - matecat
+
+  matecat-fast-daemon:
+    image: aijanai/matecat-multipurpose:3
+
+    command: ["/run-fast-analysis.sh"]
+
+    volumes:
+      - /Users/albertomassidda/matecat_local_storage:/var/www/matecat/local_storage:rw
+    networks:
+       - matecat-network
+    links:
+      - mysql
+      - redis
+      - amq
+      - filters
+      - matecat

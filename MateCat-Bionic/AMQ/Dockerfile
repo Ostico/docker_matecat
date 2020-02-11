@@ -27,7 +27,11 @@ RUN chown -R activemq: /opt/apache-activemq-5.15.10/
 RUN ln -sf /opt/activemq/bin/activemq /etc/init.d/
 
 
-COPY installActivemq.sh /tmp/installActivemq.sh
-RUN chmod +x /tmp/installActivemq.sh
+RUN /etc/init.d/activemq create /etc/default/activemq
+RUN chown root:nogroup /etc/default/activemq
+RUN chmod 600 /etc/default/activemq
 
-CMD ["/tmp/installActivemq.sh"]
+RUN sed -i 's/managementContext createConnector="false"/managementContext createConnector="true"/g' /opt/activemq/conf/activemq.xml
+RUN ln -s /etc/init.d/activemq /usr/bin/activemq
+
+CMD ["activemq", "console"]

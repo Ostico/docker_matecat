@@ -68,5 +68,4 @@ Session.vim
 .netrwhist
 *~
 .directory
-oauth_config.ini
 MateCat-Xenial/MateCatApache/data/etc/letsencrypt
