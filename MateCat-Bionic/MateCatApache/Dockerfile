@@ -12,7 +12,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
 RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/apache2
 RUN apt-get update
 
-RUN apt-get -y --fix-missing install apache2 apache2-dev libapache2-mod-php5.6 librdkafka1 librdkafka-dev \
+RUN apt-get -y --fix-missing install apache2 apache2-dev libapache2-mod-php5.6 \
     php5.6 php5.6-json php5.6-curl php5.6-xdebug php5.6-mysql php5.6-xml php5.6-mbstring php5.6-dev php5.6-mcrypt php5.6-redis \
     php5.6-zip mysql-client libzip-dev \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf
@@ -64,11 +64,6 @@ RUN phpenmod mcrypt
 COPY x_debug_setup.sh /tmp/x_debug_setup.sh
 RUN chmod +x /tmp/x_debug_setup.sh
 RUN /tmp/x_debug_setup.sh
-
-# Set rdkafka
-COPY rdkafka_setup.sh /tmp/rdkafka_setup.sh
-RUN chmod +x /tmp/rdkafka_setup.sh
-RUN /tmp/rdkafka_setup.sh
 
 # NodeJs
 COPY ./node-install.sh /tmp/node-install.sh

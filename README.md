@@ -33,7 +33,7 @@ cd /your/preferred/docker_matecat_path
 git clone https://github.com/Ostico/docker_matecat.git
 ```
 
-- Go inside this new directory there is a folder named `MateCat-Xenial`
+- Go inside this new directory there is a folder named `MateCat-Bionic`
 
 ##### Mounted volumes ( MateCat application )
 - Modify ```docker-compose.yml``` file and change the path of the matecat directory to which you just cloned in this example.
