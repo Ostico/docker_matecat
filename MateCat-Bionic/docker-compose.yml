@@ -25,6 +25,7 @@ services:
     container_name: docker_bionic_amq
     ports:
       - 61613:61613
+      - 61616:61616
       - 8161:8161
     networks:
       matecat-network:
