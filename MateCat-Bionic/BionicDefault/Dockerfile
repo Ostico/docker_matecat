@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM --platform=linux/arm64 ubuntu:bionic
 
 RUN apt-get update
 

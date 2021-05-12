@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 networks:
   matecat-network:
@@ -11,14 +11,14 @@ services:
     ports:
       - 8732:8732
     networks:
-       - matecat-network
+      - matecat-network
 
   redis:
     image: redis
     ports:
       - 6379:6379
     networks:
-       - matecat-network
+      - matecat-network
 
   amq:
     build: ./AMQ/
@@ -35,9 +35,9 @@ services:
     build: ./MySQL/
     container_name: docker_bionic_mysql
     ports:
-     - 3307:3306
+      - 3307:3306
     volumes:
-      - /Users/hashashiyyin/PhpstormProjects/temprary_docker_mount_volume:/mnt/external_volume:rw
+      - /Users/federicoricciuti/Projects/MateCat/tmp:/mnt/external_volume:rw
     networks:
       matecat-network:
         aliases:
@@ -48,22 +48,21 @@ services:
     container_name: docker_bionic_matecat
     ## Remove this environment block if you don't need it ##
     environment:
-      XDEBUG_CONFIG: 192.168.1.1
+      ## XDEBUG_CONFIG: 192.168.1.1
       FILTERS_ADDRESS: http://filters:8732/
-      SMTP_HOST: 10.30.1.225
-      SMTP_PORT: 2637
+      ## SMTP_HOST: 10.30.1.225
+      ## SMTP_PORT: 2637
     ## Remove this environment block if you don't need it ##
 
     volumes:
-      - /Users/hashashiyyin/PhpstormProjects/temprary_docker_mount_volume:/mnt/external_volume:rw
-      - /Users/hashashiyyin/PhpstormProjects/MateCat:/var/www/matecat:rw
-      - /Users/hashashiyyin/PhpstormProjects/MateCat/storage/files_storage:/var/www/matecat/storage/files_storage:rw
+      - /Users/federicoricciuti/Projects/MateCat:/var/www/matecat:rw
+      - /Users/federicoricciuti/Projects/MateCat/storage/files_storage:/var/www/matecat/storage/files_storage:rw
     ports:
       - 80:80
       - 443:443
       - 7788:7788
     networks:
-       - matecat-network
+      - matecat-network
     links:
       - mysql
       - redis
