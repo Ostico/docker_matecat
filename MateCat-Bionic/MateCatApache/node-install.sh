@@ -17,6 +17,11 @@ then
 	grep -o '>node-v.*-linux-x64.tar.gz' node-updater.html > node-cache.txt 2>&1
 
 	ARCH_VERSION=$(grep -o 'node-v.*-linux-x64.tar.gz' node-cache.txt)
+elif [ $ARCH = aarch64 ]
+then
+	grep -o '>node-v.*-linux-arm64.tar.gz' node-updater.html > node-cache.txt 2>&1
+
+	ARCH_VERSION=$(grep -o 'node-v.*-linux-arm64.tar.gz' node-cache.txt)
 else
 	grep -o '>node-v.*-linux-x86.tar.gz' node-updater.html > node-cache.txt 2>&1
 	

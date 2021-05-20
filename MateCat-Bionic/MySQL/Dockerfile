@@ -19,8 +19,8 @@ RUN apt-get update
 RUN apt-get install -y  mysql-server libev4 libgcrypt11-dev libcurl4-openssl-dev libdbd-mysql-perl rsync
 
 WORKDIR /tmp
-RUN wget https://www.percona.com/downloads/Percona-XtraBackup-2.4/Percona-XtraBackup-2.4.15/binary/debian/bionic/x86_64/percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
-RUN dpkg -i percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
+#RUN wget https://www.percona.com/downloads/Percona-XtraBackup-2.4/Percona-XtraBackup-2.4.15/binary/debian/bionic/x86_64/percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
+#RUN dpkg -i percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
 
 COPY run.sh /tmp/run.sh
 RUN chmod +x /tmp/run.sh
