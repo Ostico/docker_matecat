@@ -78,11 +78,12 @@ sed -ri -e "s/^short_open_tag.*/short_open_tag = On/" /etc/php/7.4/apache2/php.i
 # Configure XDebug ( if needed )
 if [[ -n "${XDEBUG_CONFIG}" ]]; then
   XDEBUG='
-xdebug.mode=debug
-xdebug.start_with_request=yes
-xdebug.client_host="'${XDEBUG_CONFIG}'"
-xdebug.client_port=9000
-xdebug.idekey=PHPSTORM
+zend_extension=xdebug.so
+xdebug.remote_enable=1
+xdebug.remote_autostart=1
+xdebug.remote_host="'${XDEBUG_CONFIG}'"
+xdebug.remote_port=9000
+xdebug.idekey="PHPSTORM"
 '
   printf "%s\n\n" "${XDEBUG}" | tee >/etc/php/7.4/mods-available/xdebug.ini
 fi
