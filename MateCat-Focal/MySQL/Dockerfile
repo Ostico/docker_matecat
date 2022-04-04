@@ -33,5 +33,7 @@ RUN chmod 660 /etc/mysql/my.cnf
 COPY create_mysql_admin_user.sh /tmp/create_mysql_admin_user.sh
 RUN chmod +x /tmp/create_mysql_admin_user.sh
 
+RUN rm -rf /var/lib/mysql/auto.cnf
+
 CMD ["/tmp/run.sh"]
 
