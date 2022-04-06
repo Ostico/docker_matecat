@@ -62,10 +62,32 @@ npm install
 node server.js &
 popd || exit 1
 
+### PLUGINS
+pushd plugins || exit
+for i in ./*; do
+
+    pushd "${i}" || exit;
+    chown -R "${USER_OWNER}" .
+
+    if [ "$i" = "translated" ]; then
+        echo "Skip JS build for $i plugin.";
+        popd || exit;
+        continue;
+    fi
+
+    su -c "yarn install" "${USER_OWNER}"
+    su -c "grunt" "${USER_OWNER}"
+
+    popd || exit;
+
+done
+popd || exit
+
 chown -R "${USER_OWNER}" ./inc
 chown -R "${USER_OWNER}" ./lib
 chown -R "${USER_OWNER}" ./public
 chown -R "${USER_OWNER}" ./support_scripts
+chown -R "${USER_OWNER}" ./plugins
 chown "${USER_OWNER}" ./index.php
 
 ## Apache/PHP Configurations
