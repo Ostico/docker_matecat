@@ -47,13 +47,6 @@ RUN sed -i 's/session.save_handler\s*=\s*files/session.save_handler = redis/' /e
 RUN echo 'session.save_path = "tcp://redis:6379?database=15"' >> /etc/php/5.6/apache2/php.ini
 
 
-## ENABLE Deployment utils ( apache follows symbolic links to DocumentRoot )
-RUN git clone https://github.com/etsy/mod_realdoc.git
-WORKDIR "/mod_realdoc"
-RUN apxs2 -i -a -c mod_realdoc.c
-WORKDIR "/"
-RUN rm -rf ./mod_realdoc
-
 ## Enable MateCat site
 COPY data/ /
 

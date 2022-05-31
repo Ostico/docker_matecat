@@ -83,8 +83,8 @@ services:
     ## Remove this environment block if you don't need it ##
 
     volumes:
-      - /var/www/matecat:/var/www/matecat:rw
-      - /var/www/matecat/storage/files_storage:/var/www/matecat/storage/files_storage:rw,rslave
+      - /home/hashashiyyin/PhpstormProjects/matecat:/var/www/matecat:rw
+      - /home/hashashiyyin/PhpstormProjects/matecat/storage/files_storage:/var/www/matecat/storage/files_storage:rw,rslave
     ports:
       - 80:80
       - 443:443

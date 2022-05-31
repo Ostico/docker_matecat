@@ -7,10 +7,7 @@ RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -snvf /bin/true /sbin/initctl
 ENV DEBIAN_FRONTEND noninteractive
 
-COPY mysql.keyFile.asc /tmp/mysql.keyFile.asc
-RUN gpg --import /tmp/mysql.keyFile.asc
-#RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5072E1F5
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3A79BD29
 
 #RUN echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" >> /etc/apt/sources.list.d/mysql.list
 RUN echo "deb http://repo.mysql.com/apt/ubuntu/ trusty connector-python-2.0" >> /etc/apt/sources.list.d/mysql.list
