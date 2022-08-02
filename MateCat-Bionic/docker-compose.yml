@@ -78,6 +78,7 @@ services:
     environment:
       XDEBUG_CONFIG: 172.17.0.1
       FILTERS_ADDRESS: http://filters:8732/
+      PHP_IDE_CONFIG: serverName=dev.matecat.com
       SMTP_HOST: 10.30.1.225
       SMTP_PORT: 2637
     ## Remove this environment block if you don't need it ##

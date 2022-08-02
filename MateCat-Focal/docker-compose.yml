@@ -90,8 +90,9 @@ services:
     container_name: docker_focal_matecat
     ## Remove this environment block if you don't need it ##
     environment:
-      XDEBUG_CONFIG: 172.17.0.1
+      XDEBUG_CONFIG: 172.20.0.1
       FILTERS_ADDRESS: http://filters:8732/
+      PHP_IDE_CONFIG: serverName=dev.matecat.com
 #      SMTP_HOST: localhost
 #      SMTP_PORT: 2637
     ## Remove this environment block if you don't need it ##
