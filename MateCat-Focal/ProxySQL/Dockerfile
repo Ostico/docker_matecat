@@ -2,10 +2,10 @@ FROM ostico/matecat-focal-base-image:latest
 
 RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -snvf /bin/true /sbin/initctl
-ENV DEBIAN_FRONTEND noninteractive
+RUN export DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get full-upgrade && \
-    apt-get -y install vim locate iputils-ping curl wget net-tools \
+RUN apt-get update && apt-get -y full-upgrade && \
+    apt -y install vim locate iputils-ping curl wget net-tools \
     mysql-client psmisc screen dstat \
     traceroute whois libaio1 perl perl-base perl-modules
 
