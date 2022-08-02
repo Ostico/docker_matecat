@@ -45,7 +45,8 @@ php "${MATECAT_HOME}"/composer.phar install
 if ! type yarn 1>&2 2>/dev/null; then
   echo "Installing Yarn"
   npm install -g yarn
-  echo "Installing Grunt"
+  echo "Installing Grunt and grunt-cli"
+  npm install -g grunt
   npm install -g grunt-cli
 fi
 
