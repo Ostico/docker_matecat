@@ -2,6 +2,9 @@
 
 rm /var/run/mysqld/mysqld.pid 2>/dev/null
 
+echo "Initialize mysql: mysqld --initialize-insecure"
+mysqld --initialize-insecure
+
 echo "Executing: mysql --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize --plugin-dir=/usr/lib/mysql/plugin --pid-file=/var/run/mysqld/mysqld.pid"
 mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize --plugin-dir=/usr/lib/mysql/plugin --pid-file=/var/run/mysqld/mysqld.pid
 

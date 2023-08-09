@@ -5,7 +5,7 @@ RET=1
 while [[ RET -ne 0 ]]; do
   echo "=> Waiting for confirmation of MySQL service startup"
   sleep 5
-  /usr/bin/mysql -uadmin -padmin -e "status" -h mysql-master # > /dev/null 2>&1
+  /usr/bin/mysql -uadmin -padmin -e "status" -h mysql-master > /dev/null 2>&1
   RET=$?
 done
 
@@ -48,6 +48,8 @@ if ! type yarn 1>&2 2>/dev/null; then
   echo "Installing Grunt and grunt-cli"
   npm install -g grunt
   npm install -g grunt-cli
+  echo "Installing node-sass 8.0"
+  npm install -g node-sass@^8.0
 fi
 
 echo "Refresh packages:"
@@ -64,25 +66,7 @@ node server.js &
 popd || exit 1
 
 ### PLUGINS
-pushd plugins || exit
-for i in ./*; do
-
-    pushd "${i}" || exit;
-    chown -R "${USER_OWNER}" .
-
-    if [ "$i" = "translated" ]; then
-        echo "Skip JS build for $i plugin.";
-        popd || exit;
-        continue;
-    fi
-
-    su -c "yarn install" "${USER_OWNER}"
-    su -c "grunt" "${USER_OWNER}"
-
-    popd || exit;
-
-done
-popd || exit
+bash /tmp/run_plugin_js_build.sh
 
 chown -R "${USER_OWNER}" ./inc
 chown -R "${USER_OWNER}" ./lib

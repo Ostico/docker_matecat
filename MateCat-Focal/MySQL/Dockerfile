@@ -13,8 +13,8 @@ RUN apt-get -y full-upgrade
 RUN apt-get install -y libev4 libcurl4-openssl-dev libdbd-mysql-perl rsync gnupg2 percona-server-server-5.7
 
 WORKDIR /tmp
-RUN wget https://www.percona.com/downloads/Percona-XtraBackup-2.4/Percona-XtraBackup-2.4.15/binary/debian/bionic/x86_64/percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
-RUN dpkg -i percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
+#RUN wget https://www.percona.com/downloads/Percona-XtraBackup-2.4/Percona-XtraBackup-2.4.15/binary/debian/bionic/x86_64/percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
+#RUN dpkg -i percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
 
 COPY run.sh /tmp/run.sh
 RUN chmod +x /tmp/run.sh
@@ -35,5 +35,9 @@ RUN chmod +x /tmp/create_mysql_admin_user.sh
 
 RUN rm -rf /var/lib/mysql/auto.cnf
 
+VOLUME ["/var/lib/mysql/"]
+
+RUN chown mysql:mysql /var/lib/mysql/
+#RUN mkdir -p /var/run/mysqld && chown mysql:mysql /var/run/mysqld && chown mysql:mysql /var/log/mysql/error.log
 CMD ["/tmp/run.sh"]
 

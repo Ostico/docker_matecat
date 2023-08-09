@@ -47,6 +47,7 @@ services:
      - "3307:3306"
     volumes:
       - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /home/hashashiyyin/PhpstormProjects/matecat-db-master-data:/var/lib/mysql:rw
     networks:
       matecat-network:
         aliases:
@@ -62,6 +63,7 @@ services:
      - "3308:3306"
     volumes:
       - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /home/hashashiyyin/PhpstormProjects/matecat-db-slave-data:/var/lib/mysql:rw
     depends_on:
       - mysql-master
     networks:
