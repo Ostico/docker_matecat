@@ -46,8 +46,8 @@ services:
     ports:
      - "3307:3306"
     volumes:
-      - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
-      - /home/hashashiyyin/PhpstormProjects/matecat-db-master-data:/var/lib/mysql:rw
+      - /Users/federicoricciuti/Projects/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /Users/federicoricciuti/Projects/matecat-db-master-data:/var/lib/mysql:rw
     networks:
       matecat-network:
         aliases:
@@ -62,8 +62,8 @@ services:
     ports:
      - "3308:3306"
     volumes:
-      - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
-      - /home/hashashiyyin/PhpstormProjects/matecat-db-slave-data:/var/lib/mysql:rw
+      - /Users/federicoricciuti/Projects/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /Users/federicoricciuti/Projects/matecat-db-slave-data:/var/lib/mysql:rw
     depends_on:
       - mysql-master
     networks:
@@ -80,7 +80,7 @@ services:
       - mysql-master
       - mysql-slave
     volumes:
-      - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /Users/federicoricciuti/Projects/temporary_docker_mount_volume:/mnt/external_volume:rw
     networks:
        - matecat-network
     depends_on:
@@ -91,17 +91,17 @@ services:
     build: ./MateCatApache/
     container_name: docker_focal_matecat
     ## Remove this environment block if you don't need it ##
-    environment:
-      XDEBUG_CONFIG: 172.20.0.1
-      FILTERS_ADDRESS: http://filters:8732/
-      PHP_IDE_CONFIG: serverName=dev.matecat.com
+    # environment:
+    #   XDEBUG_CONFIG: 172.20.0.1
+    #   FILTERS_ADDRESS: http://filters:8732/
+    #   PHP_IDE_CONFIG: serverName=dev.matecat.com
 #      SMTP_HOST: localhost
 #      SMTP_PORT: 2637
     ## Remove this environment block if you don't need it ##
 
     volumes:
-      - /home/hashashiyyin/PhpstormProjects/matecat/certs/letsencrypt:/etc/letsencrypt:rw
-      - /home/hashashiyyin/PhpstormProjects/matecat:/var/www/matecat:rw
+      - /Users/federicoricciuti/Projects/Matecat/certs/letsencrypt:/etc/letsencrypt:rw
+      - /Users/federicoricciuti/Projects/Matecat:/var/www/matecat:rw
     ports:
       - "80:80"
       - "443:443"
