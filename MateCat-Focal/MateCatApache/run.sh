@@ -45,9 +45,6 @@ php "${MATECAT_HOME}"/composer.phar install
 if ! type yarn 1>&2 2>/dev/null; then
   echo "Installing Yarn"
   npm install -g yarn
-  echo "Installing Grunt and grunt-cli"
-  npm install -g grunt
-  npm install -g grunt-cli
   echo "Installing node-sass 8.0"
   npm install -g node-sass@^8.0
 fi
@@ -55,7 +52,7 @@ fi
 echo "Refresh packages:"
 rm -rf ./node_modules
 yarn install
-grunt deploy
+yarn build:dev
 
 pushd ./nodejs || exit 1
 sed -ri -e "s/localhost/amq/" server.js
