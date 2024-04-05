@@ -12,7 +12,7 @@ services:
 
   filters:
     build: ./MateCatFilters/
-    container_name: docker_focal_matecat_filter
+    container_name: matecat_filter
     ports:
       - "8732:8732"
     networks:
@@ -20,6 +20,7 @@ services:
 
   redis:
     image: redis
+    container_name: matecat-focal-redis
     ports:
       - "6379:6379"
     networks:
@@ -27,7 +28,7 @@ services:
 
   amq:
     build: ./AMQ/
-    container_name: docker_focal_amq
+    container_name: amq
     ports:
       - "61613:61613"
       - "61616:61616"
@@ -42,7 +43,7 @@ services:
       context: ./MySQL/
       args:
         _type_: "master"
-    container_name: docker_focal_mysql_master
+    container_name: mysql-master
     ports:
      - "3307:3306"
     volumes:
@@ -58,7 +59,7 @@ services:
       context: ./MySQL/
       args:
         _type_: "slave"
-    container_name: docker_focal_mysql_slave
+    container_name: mysql-slave
     ports:
      - "3308:3306"
     volumes:
@@ -73,7 +74,7 @@ services:
 
   proxysql:
     build: ./ProxySQL/
-    container_name: docker_focal_proxysql
+    container_name: proxysql
     ports:
       - "3306:3306"
     links:
@@ -89,7 +90,7 @@ services:
 
   matecat:
     build: ./MateCatApache/
-    container_name: docker_focal_matecat
+    container_name: matecat
     ## Remove this environment block if you don't need it ##
     environment:
       XDEBUG_CONFIG: 172.20.0.1

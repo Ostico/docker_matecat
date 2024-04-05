@@ -7,7 +7,7 @@ echo "Executing: mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/us
 service mysql start
 
 # Create users on master and slave if they do not exist
-/bin/bash /tmp/create_mysql_admin_user.sh
+/bin/bash /tmp/create_mysql_admin_user.sh || exit 1
 
 # Now check for matecat db, if the db do not exists and master has no GTID, the replication is not in place
 MATECAT_EXISTS=$(mysql -e "SHOW DATABASES LIKE 'matecat%'")

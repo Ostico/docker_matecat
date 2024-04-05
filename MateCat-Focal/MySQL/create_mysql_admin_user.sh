@@ -10,7 +10,7 @@ done
 
 ADM_ACCOUNT=$(mysql -e "SELECT * FROM mysql.user WHERE User = 'admin'")
 if [[ -n "${ADM_ACCOUNT}" ]]; then
-    return 0
+    exit 0
 fi
 
 #PASS=${MYSQL_PASS:-$(pwgen -s 12 1)}
