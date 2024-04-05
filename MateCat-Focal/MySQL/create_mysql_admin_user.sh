@@ -4,11 +4,11 @@ RET=1
 while [[ RET -ne 0 ]]; do
     echo "=> Waiting for confirmation of MySQL service startup"
     sleep 5
-    mysql -uroot -e "status" # > /dev/null 2>&1
+    mysql -e "status" # > /dev/null 2>&1
     RET=$?
 done
 
-ADM_ACCOUNT=$(mysql -uroot -e "SELECT * FROM mysql.user WHERE User = 'admin'")
+ADM_ACCOUNT=$(mysql -e "SELECT * FROM mysql.user WHERE User = 'admin'")
 if [[ -n "${ADM_ACCOUNT}" ]]; then
     return 0
 fi
@@ -18,9 +18,9 @@ PASS=${MYSQL_PASS}
 _word=$( [ "${MYSQL_PASS}" ] && echo "preset" || echo "random" )
 echo "=> Creating MySQL admin user with ${_word} password"
 
-mysql -uroot -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$PASS'"
-mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION"
-mysql -uroot -e "FLUSH PRIVILEGES"
+mysql -e "CREATE USER 'admin'@'%' IDENTIFIED BY '$PASS'"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION"
+mysql -e "FLUSH PRIVILEGES"
 
 
 echo "=> Done!"

@@ -37,7 +37,5 @@ RUN rm -rf /var/lib/mysql/auto.cnf
 
 VOLUME ["/var/lib/mysql/"]
 
-RUN chown mysql:mysql /var/lib/mysql/
-#RUN mkdir -p /var/run/mysqld && chown mysql:mysql /var/run/mysqld && chown mysql:mysql /var/log/mysql/error.log
 CMD ["/tmp/run.sh"]
 
