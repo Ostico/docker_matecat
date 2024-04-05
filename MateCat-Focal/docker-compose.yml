@@ -12,7 +12,7 @@ services:
 
   filters:
     build: ./MateCatFilters/
-    container_name: matecat_filter
+    container_name: matecat-filter
     ports:
       - "8732:8732"
     networks:
@@ -20,7 +20,7 @@ services:
 
   redis:
     image: redis
-    container_name: matecat-focal-redis
+    container_name: matecat-redis
     ports:
       - "6379:6379"
     networks:
@@ -28,7 +28,7 @@ services:
 
   amq:
     build: ./AMQ/
-    container_name: amq
+    container_name: matecat-amq
     ports:
       - "61613:61613"
       - "61616:61616"
@@ -43,7 +43,7 @@ services:
       context: ./MySQL/
       args:
         _type_: "master"
-    container_name: mysql-master
+    container_name: matecat-mysql-master
     ports:
      - "3307:3306"
     volumes:
@@ -59,7 +59,7 @@ services:
       context: ./MySQL/
       args:
         _type_: "slave"
-    container_name: mysql-slave
+    container_name: matecat-mysql-slave
     ports:
      - "3308:3306"
     volumes:
@@ -74,7 +74,7 @@ services:
 
   proxysql:
     build: ./ProxySQL/
-    container_name: proxysql
+    container_name: matecat-proxysql
     ports:
       - "3306:3306"
     links:
