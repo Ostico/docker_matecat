@@ -44,7 +44,7 @@ RUN userdel www-data
 RUN groupadd www-data
 RUN useradd -ms /bin/bash -g www-data www-data
 
-RUN curl -fsSL https://browscap.org/stream?q=PHP_BrowsCapINI --output ${PHPDIR}/mods-available/php_browscap.ini
+RUN curl -fsSL https://browscap.org/stream?q=Lite_PHP_BrowsCapINI --output ${PHPDIR}/mods-available/php_browscap.ini
 RUN sed -i "s|;browscap = extra/browscap.ini.*|browscap = \"${PHPDIR}/mods-available/php_browscap.ini\"|g" ${PHPDIR}/apache2/php.ini
 
 RUN sed -i 's/session.save_handler\s*=\s*files/session.save_handler = redis/' ${PHPDIR}/apache2/php.ini
