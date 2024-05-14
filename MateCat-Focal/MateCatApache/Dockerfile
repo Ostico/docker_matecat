@@ -1,6 +1,7 @@
 FROM ostico/matecat-focal-base-image:latest
 
 ENV NODE_RELEASE="18.x"
+ENV PHPDIR="/etc/php/7.4"
 
 RUN export DEBIAN_FRONTEND=noninteractive
 RUN ln -fs /usr/share/zoneinfo/Europe/Rome /etc/localtime
@@ -43,8 +44,11 @@ RUN userdel www-data
 RUN groupadd www-data
 RUN useradd -ms /bin/bash -g www-data www-data
 
-RUN sed -i 's/session.save_handler\s*=\s*files/session.save_handler = redis/' /etc/php/7.4/apache2/php.ini
-RUN echo 'session.save_path = "tcp://redis:6379?database=15"' >> /etc/php/7.4/apache2/php.ini
+RUN curl -fsSL https://browscap.org/stream?q=PHP_BrowsCapINI --output ${PHPDIR}/mods-available/php_browscap.ini
+RUN sed -i "s|;browscap = extra/browscap.ini.*|browscap = \"${PHPDIR}/mods-available/php_browscap.ini\"|g" ${PHPDIR}/apache2/php.ini
+
+RUN sed -i 's/session.save_handler\s*=\s*files/session.save_handler = redis/' ${PHPDIR}/apache2/php.ini
+RUN echo 'session.save_path = "tcp://redis:6379?database=15"' >> ${PHPDIR}/apache2/php.ini
 
 ## Enable MateCat site
 COPY data/ /

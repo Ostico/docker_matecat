@@ -1,5 +1,3 @@
-version: '3.2'
-
 networks:
   matecat-network:
     driver: bridge
@@ -93,7 +91,7 @@ services:
     container_name: matecat
     ## Remove this environment block if you don't need it ##
     environment:
-      XDEBUG_CONFIG: 172.20.0.1
+      XDEBUG_CONFIG: 172.19.0.1
       FILTERS_ADDRESS: http://filters:8732/
       PHP_IDE_CONFIG: serverName=dev.matecat.com
 #      SMTP_HOST: localhost
