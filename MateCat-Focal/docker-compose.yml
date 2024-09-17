@@ -86,12 +86,31 @@ services:
       - mysql-master
       - mysql-slave
 
+  smtp4dev:
+    image: rnwood/smtp4dev
+    container_name: smtp4dev
+    hostname: smtp4dev
+    environment:
+      - ASPNETCORE_URLS=http://+:3000
+      - SERVEROPTIONS__URLS=http://+:3000
+      - ASPNETCORE_HTTP_PORTS=3000
+    ports:
+      - "3000:3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"
+        max-size: "10m"
+    restart: unless-stopped
+    networks:
+      - matecat-network
+
   matecat:
     build: ./MateCatApache/
     container_name: matecat
     ## Remove this environment block if you don't need it ##
     environment:
-      XDEBUG_CONFIG: 172.19.0.1
+      XDEBUG_CONFIG: 172.31.0.1
       FILTERS_ADDRESS: http://filters:8732/
       PHP_IDE_CONFIG: serverName=dev.matecat.com
 #      SMTP_HOST: localhost
@@ -114,6 +133,7 @@ services:
       - redis
       - amq
       - filters
+      - smtp4dev
     depends_on:
       - proxysql
       - mysql-master
@@ -121,3 +141,4 @@ services:
       - redis
       - amq
       - filters
+      - smtp4dev

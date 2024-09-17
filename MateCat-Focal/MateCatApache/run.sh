@@ -45,8 +45,8 @@ php "${MATECAT_HOME}"/composer.phar install
 if ! type yarn 1>&2 2>/dev/null; then
   echo "Installing Yarn"
   npm install -g yarn
-  echo "Installing node-sass 8.0"
-  npm install -g node-sass@^8.0
+  echo "Installing sass@^1.77"
+  npm install -g sass@^1.77
 fi
 
 echo "Refresh packages:"
