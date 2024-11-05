@@ -12,10 +12,13 @@ RUN apt-get -y full-upgrade
 RUN locale-gen en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-RUN apt-get -y --fix-missing install apache2 apache2-dev libapache2-mod-php \
+RUN mkdir -p /etc/apt/keyrings nodejs \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_RELEASE}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
+    && apt-get -y --fix-missing install apache2 apache2-dev libapache2-mod-php \
             php php-xdebug php-json php-xml php-curl php-mysql php-mbstring php-dev php-redis php-zip php-gd mysql-client libzip-dev \
-            certbot python3-certbot-apache redis-tools \
-            && curl -fsSL "https://deb.nodesource.com/setup_${NODE_RELEASE}" | bash - && apt-get install -y nodejs \
+            certbot python3-certbot-apache redis-tools nodejs \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Prepare the environment
