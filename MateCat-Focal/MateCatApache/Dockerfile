@@ -53,7 +53,7 @@ RUN echo 'session.save_path = "tcp://redis:6379?database=15"' >> ${PHPDIR}/apach
 ## Enable MateCat site
 COPY data/ /
 
-RUN a2enmod rewrite filter deflate headers expires proxy_http ssl php7.4
+RUN a2enmod rewrite filter deflate headers expires proxy_http ssl php7.4 proxy_balancer proxy_wstunnel slotmem_shm
 RUN #phpenmod mcrypt
 
 COPY run_plugin_js_build.sh /tmp/run_plugin_js_build.sh
