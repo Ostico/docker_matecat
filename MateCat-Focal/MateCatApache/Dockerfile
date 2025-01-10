@@ -1,6 +1,6 @@
 FROM ostico/matecat-focal-base-image:latest
 
-ENV NODE_RELEASE="20.x"
+ENV NODE_RELEASE="20"
 ENV PHPDIR="/etc/php/7.4"
 
 RUN export DEBIAN_FRONTEND=noninteractive
