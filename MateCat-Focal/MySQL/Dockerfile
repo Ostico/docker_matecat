@@ -6,13 +6,13 @@ ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /tmp
 
-RUN wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb && dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
-
 RUN apt-get update
+RUN apt-get install -y libev4 libcurl4-openssl-dev libdbd-mysql-perl rsync gnupg2
+RUN wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb && dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
+RUN apt-get update
+RUN percona-release enable-only ps-57 && apt-get install -y percona-server-server-5.7
 RUN apt-get -y full-upgrade
-RUN apt-get install -y libev4 libcurl4-openssl-dev libdbd-mysql-perl rsync gnupg2 percona-server-server-5.7
 
-WORKDIR /tmp
 #RUN wget https://www.percona.com/downloads/Percona-XtraBackup-2.4/Percona-XtraBackup-2.4.15/binary/debian/bionic/x86_64/percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
 #RUN dpkg -i percona-xtrabackup-24_2.4.15-1.bionic_amd64.deb
 
