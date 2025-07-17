@@ -70,7 +70,7 @@ chown -R "${USER_OWNER}" ./lib
 chown -R "${USER_OWNER}" ./public
 chown -R "${USER_OWNER}" ./support_scripts
 chown -R "${USER_OWNER}" ./plugins
-chown "${USER_OWNER}" ./index.php
+chown "${USER_OWNER}" ./router.php
 
 ## Apache/PHP Configurations
 # Prepare PHP INI
@@ -94,7 +94,7 @@ fi
 ## Apache/PHP Configurations
 
 ########### BOOT ANALYSIS
-pushd ./lib/Utils/Analysis || exit 1
+pushd ./daemons || exit 1
 /bin/bash restartAnalysis.sh
 popd || exit 1
 
