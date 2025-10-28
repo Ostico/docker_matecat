@@ -62,6 +62,17 @@ git clone https://github.com/Ostico/docker_matecat.git
   ## Remove this environment block if you don't need it ##
 ```
 
+#### IMPORTANT Host configuration
+
+- Add an environment variable to your host machine to define the container user:
+
+```shell
+export docker_user="$(id -u):$(id -g)"
+export docker_uid="$(id -u)"
+export docker_gid="$(id -g)"
+source ~/.bash_profile
+```
+
 #### Further MateCat configurations ( Advanced users )
 More specific configurations can be made directly into your ```docker_matecat/MatecatApache/config.ini``` before docker starts the installation.
 

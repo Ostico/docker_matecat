@@ -1,0 +1,98 @@
+[client]
+port = 3306
+socket = /var/run/mysqld/mysqld.sock
+ 
+[mysqld_safe]
+socket = /var/run/mysqld/mysqld.sock
+nice = 0
+ 
+[mysqld]
+#
+# * Basic Settings
+#
+user = mysql
+pid-file = /var/run/mysqld/mysqld.pid
+socket = /var/run/mysqld/mysqld.sock
+port = 3306
+basedir = /usr
+datadir = /var/lib/mysql
+tmpdir = /tmp
+lc-messages-dir = /usr/share/mysql
+skip-external-locking
+skip-name-resolve
+
+#force connection to utf8
+init_connect='SET NAMES utf8'
+skip-character-set-client-handshake
+character-set-server=utf8
+
+#
+# Instead of skip-networking the default is now to listen only on
+# localhost which is more compatible and is not less secure.
+bind-address = 0.0.0.0
+
+#
+# * Fine Tuning
+#
+key_buffer_size = 32M
+max_allowed_packet=64M
+#max_allowed_packet=16M
+thread_stack = 192K
+thread_cache_size       = 50
+
+max_connections        = 500
+open_files_limit               = 65535
+table_definition_cache         = 1024
+table_open_cache               = 2048
+
+#
+# * Query Cache Configuration
+#
+query_cache_limit = 1M
+query_cache_size        = 16M
+
+#
+# * Logging and Replication
+#
+# Here you can see queries with especially long duration
+slow-query-log = 1
+slow-query-log-file = /var/log/mysql/mysql-slow.log
+long_query_time = 1000000
+log-queries-not-using-indexes=1
+log_error = /var/log/mysql/error.log
+
+#
+# The following can be used as easy to replay backup logs or for replication.
+# note: if you are setting up a replication slave, see README.Debian about
+#       other settings you may need to change.
+server-id               = 300
+log_bin			        = /var/lib/mysql-files/binlog/mysql-bin.log
+expire_logs_days        = 10
+max_binlog_size         = 100M
+
+#GLOBAL TRANSACTION ID MySQL > 5.6 ONLY
+log_slave_updates=true
+gtid_mode = on
+enforce_gtid_consistency = true
+sql-mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+explicit_defaults_for_timestamp=true
+
+#
+# * InnoDB
+#
+# InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
+# Read the manual for more InnoDB related options. There are many!
+innodb_use_native_aio = 0
+innodb-flush-method            = O_DIRECT
+innodb_file_per_table = 1
+innodb-buffer-pool-size = 1G
+innodb_read_io_threads=64
+innodb-log-files-in-group      = 2
+innodb_write_io_threads=64
+innodb-flush-log-at-trx-commit = 2
+innodb_log_file_size=256M
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet = 32M

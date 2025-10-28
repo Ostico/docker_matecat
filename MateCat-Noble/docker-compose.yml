@@ -1,0 +1,147 @@
+networks:
+  matecat-network:
+    driver: bridge
+
+services:
+
+  base:
+    image: ostico/matecat-noble-base-image
+    build: ./NobleBaseImage
+
+  filters:
+    build: ./MateCatFilters/
+    container_name: matecat-filter
+    ports:
+      - "8732:8732"
+    networks:
+       - matecat-network
+
+  redis:
+    image: redis
+    container_name: matecat-redis
+    ports:
+      - "6379:6379"
+    networks:
+       - matecat-network
+
+  amq:
+    build: ./AMQ/
+    container_name: matecat-amq
+    ports:
+      - "61613:61613"
+      - "61616:61616"
+      - "8161:8161"
+    networks:
+      matecat-network:
+        aliases:
+          - amq
+
+  mysql-master:
+    build:
+      context: ./MySQL/
+      args:
+        _type_: "master"
+    container_name: matecat-mysql-master
+    ports:
+     - "3307:3306"
+    volumes:
+      - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /home/hashashiyyin/PhpstormProjects/matecat-db-master-data:/var/lib/mysql:rw
+    networks:
+      matecat-network:
+        aliases:
+          - mysql-master
+
+  mysql-slave:
+    build:
+      context: ./MySQL/
+      args:
+        _type_: "slave"
+    container_name: matecat-mysql-slave
+    ports:
+     - "3308:3306"
+    volumes:
+      - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
+      - /home/hashashiyyin/PhpstormProjects/matecat-db-slave-data:/var/lib/mysql:rw
+    depends_on:
+      - mysql-master
+    networks:
+      matecat-network:
+        aliases:
+          - mysql-slave
+
+  proxysql:
+    build: ./ProxySQL/
+    container_name: matecat-proxysql
+    ports:
+      - "3306:3306"
+    links:
+      - mysql-master
+      - mysql-slave
+    volumes:
+      - /home/hashashiyyin/PhpstormProjects/temporary_docker_mount_volume:/mnt/external_volume:rw
+    networks:
+       - matecat-network
+    depends_on:
+      - mysql-master
+      - mysql-slave
+
+  smtp4dev:
+    image: rnwood/smtp4dev
+    container_name: smtp4dev
+    hostname: smtp4dev
+    environment:
+      - ASPNETCORE_URLS=http://+:3000
+      - SERVEROPTIONS__URLS=http://+:3000
+      - ASPNETCORE_HTTP_PORTS=3000
+    ports:
+      - "3000:3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"
+        max-size: "10m"
+    restart: unless-stopped
+    networks:
+      - matecat-network
+
+  matecat:
+    build:
+      context: ./MateCatApache/
+      args:
+        USER_UID: ${docker_uid}
+        USER_GID: ${docker_gid}
+    container_name: matecat
+    environment:
+    ## Remove this environment block if you don't need it ##
+      XDEBUG_CONFIG: 172.19.0.1
+      FILTERS_ADDRESS: http://filters:8732/
+      PHP_IDE_CONFIG: serverName=dev.matecat.com
+#      SMTP_HOST: localhost
+#      SMTP_PORT: 2637
+    ## Remove this environment block if you don't need it ##
+    volumes:
+      - /home/hashashiyyin/PhpstormProjects/matecat/certs/letsencrypt:/etc/letsencrypt:rw
+      - /home/hashashiyyin/PhpstormProjects/matecat:/var/www/matecat:rw
+    ports:
+      - "80:80"
+      - "443:443"
+      - "7788:7788"
+    networks:
+       - matecat-network
+    links:
+      - proxysql
+      - mysql-master
+      - mysql-slave
+      - redis
+      - amq
+      - filters
+      - smtp4dev
+    depends_on:
+      - proxysql
+      - mysql-master
+      - mysql-slave
+      - redis
+      - amq
+      - filters
+      - smtp4dev
