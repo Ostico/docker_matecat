@@ -70,8 +70,10 @@ RUN #phpenmod mcrypt
 
 COPY run_plugin_js_build.sh /tmp/run_plugin_js_build.sh
 COPY run.sh /tmp/run.sh
+COPY vite-proxy.sh /usr/local/bin/vite-proxy
 RUN chmod +x /tmp/run_plugin_js_build.sh
 RUN chmod +x /tmp/run.sh
+RUN chmod +x /usr/local/bin/vite-proxy
 
 WORKDIR "/var/www/matecat"
 CMD ["/tmp/run.sh"]
