@@ -6,14 +6,14 @@
 
 # Disable caching for proxied paths
 <LocationMatch "^/((@vite|@react-refresh|@fs|vite-entries|__vite_hmr|node_modules)(/|$))">
-    ExpiresActive Off
-    Header always unset Expires
-    Header always set Cache-Control "no-store"
+ExpiresActive Off
+Header always unset Expires
+Header always set Cache-Control "no-store"
 </LocationMatch>
 <LocationMatch "^/public/">
-    ExpiresActive Off
-    Header always unset Expires
-    Header always set Cache-Control "no-store"
+ExpiresActive Off
+Header always unset Expires
+Header always set Cache-Control "no-store"
 </LocationMatch>
 
 # Only proxy when the Vite dev server is actually reachable
@@ -29,8 +29,8 @@ RewriteRule ^/__vite_hmr(.*)$ "ws://127.0.0.1:5173/__vite_hmr$1" [P,L]
 # Gate: check if Vite dev server is reachable before proxying
 # If not, fall through to local filesystem / .htaccess rules
 <Proxy "http://127.0.0.1:5173/*">
-    ProxySet timeout=120
-    ProxySet retry=5
+ProxySet timeout=120
+ProxySet retry=5
 </Proxy>
 
 ProxyPass "/@vite" "http://127.0.0.1:5173/@vite" retry=5 connectiontimeout=1 timeout=120
@@ -45,11 +45,14 @@ ProxyPass "/vite-entries/" "http://127.0.0.1:5173/vite-entries/" retry=5 connect
 ProxyPassReverse "/vite-entries/" "http://127.0.0.1:5173/vite-entries/"
 ProxyPass "/node_modules/" "http://127.0.0.1:5173/node_modules/" retry=5 connectiontimeout=1 timeout=120
 ProxyPassReverse "/node_modules/" "http://127.0.0.1:5173/node_modules/"
+ProxyPass "/public/" "http://127.0.0.1:5173/public/" retry=5 connectiontimeout=1 timeout=120
+ProxyPassReverse "/public/" "http://127.0.0.1:5173/public/"
 
-# /public/ and /plugins/ are only proxied for Vite-specific subpaths
-# (not the broad /public/ which would intercept production-built assets)
-ProxyPass "/public/vite-entries/" "http://127.0.0.1:5173/public/vite-entries/" retry=5 connectiontimeout=1 timeout=120
-ProxyPassReverse "/public/vite-entries/" "http://127.0.0.1:5173/public/vite-entries/"
+# Plugins and Node Modules
+ProxyPass "/plugins/" "http://127.0.0.1:5173/plugins/" retry=5 connectiontimeout=1 timeout=120
+ProxyPassReverse "/plugins/" "http://127.0.0.1:5173/plugins/"
+ProxyPass "/node_modules/" "http://127.0.0.1:5173/node_modules/" retry=5 connectiontimeout=1 timeout=120
+ProxyPassReverse "/node_modules/" "http://127.0.0.1:5173/node_modules/"
 
 # Longer timeout for Vite (SCSS compilation can be slow on first load)
 ProxyTimeout 120
