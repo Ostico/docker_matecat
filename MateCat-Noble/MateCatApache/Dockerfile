@@ -3,7 +3,7 @@ FROM ostico/matecat-noble-base-image:latest
 ARG USER_UID
 ARG USER_GID
 
-ENV NODE_RELEASE="20"
+ENV NODE_RELEASE="22"
 ENV PHPDIR="/etc/php/8.3"
 
 RUN export DEBIAN_FRONTEND=noninteractive
