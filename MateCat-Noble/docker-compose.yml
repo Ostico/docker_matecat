@@ -8,13 +8,13 @@ services:
     image: ostico/matecat-noble-base-image
     build: ./NobleBaseImage
 
-  filters:
-    build: ./MateCatFilters/
-    container_name: matecat-filter
-    ports:
-      - "8732:8732"
-    networks:
-       - matecat-network
+      #   filters:
+      #     build: ./MateCatFilters/
+      #     container_name: matecat-filter
+      #     ports:
+      #       - "8732:8732"
+      #     networks:
+      #        - matecat-network
 
   redis:
     image: redis
@@ -29,6 +29,7 @@ services:
     container_name: matecat-amq
     ports:
       - "61613:61613"
+      - "61614:61614"
       - "61616:61616"
       - "8161:8161"
     networks:
@@ -135,13 +136,13 @@ services:
       - mysql-slave
       - redis
       - amq
-      - filters
       - smtp4dev
+#      - filters
     depends_on:
       - proxysql
       - mysql-master
       - mysql-slave
       - redis
       - amq
-      - filters
       - smtp4dev
+#      - filters
