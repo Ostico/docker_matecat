@@ -70,3 +70,7 @@ Session.vim
 .directory
 oauth_config.ini
 MateCat-Xenial/MateCatApache/data/etc/letsencrypt
+
+.env
+.DS_Store
+temporary_docker_mount_volume/
