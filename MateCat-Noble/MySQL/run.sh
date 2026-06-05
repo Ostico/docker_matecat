@@ -1,6 +1,13 @@
 #!/bin/bash
 
-chown mysql:mysql /var/lib/mysql/
+# macOS VirtioFS bind-mounts expose files as uid 0; mysqld runs as 'mysql'.
+chown -R mysql:mysql /var/lib/mysql/
+
+# Discard inherited server-uuid so this instance generates its own.
+rm -f /var/lib/mysql/auto.cnf
+
+find /var/lib/mysql -name '.DS_Store' -delete 2>/dev/null
+
 rm -rf /var/run/mysqld/mysqld.pid 2>/dev/null
 
 echo "Executing: mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --log-error=/var/log/mysql/error.log --open-files-limit=65535 --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306"
