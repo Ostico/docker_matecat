@@ -101,6 +101,8 @@ pushd ./daemons || exit 1
 popd || exit 1
 
 echo "Starting Apache..."
+# Stale pid survives docker restart; service apache2 restart would skip start as "already running"
+rm -f /var/run/apache2/apache2.pid
 /etc/init.d/apache2 restart
 echo "Apache Started"
 
