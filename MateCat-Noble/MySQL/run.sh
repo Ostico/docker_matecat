@@ -43,41 +43,51 @@ if [[ -z "${MATECAT_EXISTS}" && "${_type_}" == "master" ]]; then
   done
 
   # MySql MateCat
-  git clone https://github.com/matecat/MateCat.git /tmp/matecat
+  DUMP_FILE=$(ls -1 /mnt/external_volume/*-dump.sql 2>/dev/null | head -1)
+  if [[ -n "${DUMP_FILE}" ]]; then
+    echo "Restoring from dump: ${DUMP_FILE}"
+    mysql -e "CREATE DATABASE IF NOT EXISTS matecat CHARACTER SET utf8 COLLATE utf8_general_ci;"
+    /usr/bin/mysql matecat < "${DUMP_FILE}"
+  else
+    git clone https://github.com/matecat/MateCat.git /tmp/matecat
+    echo "Executing: /usr/bin/mysql </tmp/matecat/lib/Model/matecat.sql"
+    /usr/bin/mysql </tmp/matecat/lib/Model/matecat.sql
+    rm -rf /tmp/matecat
+  fi
 
-  # Creating schema and fill some data
-  echo "Executing: /usr/bin/mysql </tmp/matecat/lib/Model/matecat.sql"
-  /usr/bin/mysql </tmp/matecat/lib/Model/matecat.sql
-  # clean
-  rm -rf /tmp/matecat
+elif [[ "${_type_}" == "slave" ]]; then
 
-elif [[ -z "${MATECAT_EXISTS}" && "${_type_}" == "slave" ]]; then
+  SLAVE_IO=$(mysql -e "SHOW SLAVE STATUS\G" 2>/dev/null | grep -i "Slave_IO_Running:" | awk '{print $NF}')
+  SLAVE_SQL=$(mysql -e "SHOW SLAVE STATUS\G" 2>/dev/null | grep -i "Slave_SQL_Running:" | awk '{print $NF}')
 
-  RET=1
-  while [[ RET -ne 0 ]]; do
+  if [[ "$SLAVE_IO" != "Yes" || "$SLAVE_SQL" != "Yes" ]]; then
+    echo "=> Slave replication not running (IO=${SLAVE_IO:-none} SQL=${SLAVE_SQL:-none}); re-establishing..."
 
-    echo "=> Waiting for confirmation of MySQL Master ready"
-    MYSQL_MASTER_GTID=$(mysql -uadmin -padmin -h mysql-master -e "SHOW MASTER STATUS\G" | grep -i "Executed_Gtid_Set:" | awk '{print $2}')
-    printf "*** MYSQL_MASTER_GTID: %s \n\n" "${MYSQL_MASTER_GTID}"
+    RET=1
+    while [[ RET -ne 0 ]]; do
 
-    if [[ -n "${MYSQL_MASTER_GTID}" ]]; then
-      RET=0
-    fi
+      echo "=> Waiting for confirmation of MySQL Master ready"
+      MYSQL_MASTER_GTID=$(mysql -uadmin -padmin -h mysql-master -e "SHOW MASTER STATUS\G" | grep -i "Executed_Gtid_Set:" | awk '{print $2}')
+      printf "*** MYSQL_MASTER_GTID: %s \n\n" "${MYSQL_MASTER_GTID}"
 
-    sleep 2
+      if [[ -n "${MYSQL_MASTER_GTID}" ]]; then
+        RET=0
+      fi
 
-  done
+      sleep 2
 
-  #Set Replication
-  echo "#Set Replication"
-  mysql -e "RESET MASTER"
-  mysql -e "STOP SLAVE; RESET SLAVE ALL;"
-  mysql -e "SET GLOBAL gtid_purged=\"${MYSQL_MASTER_GTID}\" ;"
-  mysql -e "CHANGE MASTER TO MASTER_HOST=\"mysql-master\", MASTER_USER=\"admin\", MASTER_PASSWORD=\"admin\", MASTER_AUTO_POSITION = 1; START SLAVE;"
+    done
 
-  sleep 1
-  SLAVE_STATUS=$(mysql -e "SHOW SLAVE STATUS \G")
-  printf "%s \n\n" "${SLAVE_STATUS}"
+    echo "#Set Replication"
+    mysql -e "STOP SLAVE; RESET SLAVE ALL;"
+    mysql -e "RESET MASTER;"
+    mysql -e "SET GLOBAL gtid_purged=\"${MYSQL_MASTER_GTID}\" ;"
+    mysql -e "CHANGE MASTER TO MASTER_HOST=\"mysql-master\", MASTER_USER=\"admin\", MASTER_PASSWORD=\"admin\", MASTER_AUTO_POSITION = 1; START SLAVE;"
+
+    sleep 1
+    SLAVE_STATUS=$(mysql -e "SHOW SLAVE STATUS \G")
+    printf "%s \n\n" "${SLAVE_STATUS}"
+  fi
 
 fi
 
