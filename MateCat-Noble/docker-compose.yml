@@ -50,7 +50,7 @@ services:
      - "3307:3306"
     volumes:
      - ${TEMP_VOLUME_PATH:-../temporary_docker_mount_volume}:/mnt/external_volume:rw
-     - master-mysql-data:/var/lib/mysql:rw
+     - ${MYSQL_MASTER_LOCAL_PATH:-master-mysql-data}:/var/lib/mysql:rw
     networks:
       matecat-network:
         aliases:
@@ -67,7 +67,7 @@ services:
      - "3308:3306"
     volumes:
       - ${TEMP_VOLUME_PATH:-../temporary_docker_mount_volume}:/mnt/external_volume:rw
-      - slave-mysql-data:/var/lib/mysql:rw
+      - ${MYSQL_SLAVE_LOCAL_PATH:-slave-mysql-data}:/var/lib/mysql:rw
     depends_on:
       - mysql-master
     networks:
@@ -76,7 +76,10 @@ services:
           - mysql-slave
 
   proxysql:
-    build: ./ProxySQL/
+    build:
+      context: ./ProxySQL/
+      args:
+        DOCKER_PLATFORM: ${DOCKER_PLATFORM:-linux/amd64}
     platform: ${DOCKER_PLATFORM:-linux/amd64}
     container_name: matecat-proxysql
     ports:

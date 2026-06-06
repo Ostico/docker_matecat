@@ -39,7 +39,9 @@ fi
 # debug, configuration
 cat ./inc/config.ini
 
-php -r "readfile('https://getcomposer.org/installer');" | php
+if [[ ! -f "${MATECAT_HOME}/composer.phar" ]]; then
+  php -r "readfile('https://getcomposer.org/installer');" | php
+fi
 php "${MATECAT_HOME}"/composer.phar install
 
 if ! type yarn 1>&2 2>/dev/null; then
