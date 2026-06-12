@@ -1,3 +1,6 @@
+# FROM ostico/matecat-noble-base-image:latest
+
+# -------------------------- Base image replicated here to be sticky to amd64 platform ----------------------------
 FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -10,6 +13,9 @@ RUN apt-get -y install pcp # Install PCP first to avoid conflicts with other pac
 RUN apt-get -y --fix-missing --fix-broken install apt-utils vim locate iputils-ping git curl wget net-tools tree software-properties-common locales \
     psmisc screen dstat \
     traceroute whois perl perl-base perl-modules
+
+
+# ------------------------- MySQL Installation -------------------------------------------
 
 RUN apt-get -y full-upgrade
 
