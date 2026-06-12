@@ -44,7 +44,7 @@ services:
       context: ./MySQL/
       args:
         _type_: "master"
-    platform: ${DOCKER_PLATFORM:-linux/amd64}
+#    platform: ${DOCKER_PLATFORM:-linux/amd64}
     container_name: matecat-mysql-master
     ports:
      - "3307:3306"
@@ -61,7 +61,7 @@ services:
       context: ./MySQL/
       args:
         _type_: "slave"
-    platform: ${DOCKER_PLATFORM:-linux/amd64}
+#    platform: ${DOCKER_PLATFORM:-linux/amd64}
     container_name: matecat-mysql-slave
     ports:
      - "3308:3306"
