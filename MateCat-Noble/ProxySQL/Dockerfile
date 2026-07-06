@@ -12,8 +12,8 @@ RUN apt-get update && apt-get -y full-upgrade && \
 
 WORKDIR /tmp
 RUN PROXYSQL_ARCH="${DOCKER_PLATFORM##*/}" && \
-    wget "https://github.com/sysown/proxysql/releases/download/v2.1.1/proxysql_2.1.1-ubuntu20_${PROXYSQL_ARCH}.deb" && \
-    dpkg -i "proxysql_2.1.1-ubuntu20_${PROXYSQL_ARCH}.deb"
+    wget "https://github.com/sysown/proxysql/releases/download/v2.2.2/proxysql_2.2.2-ubuntu20_${PROXYSQL_ARCH}.deb" && \
+    dpkg -i "proxysql_2.2.2-ubuntu20_${PROXYSQL_ARCH}.deb"
 
 COPY proxysql.cnf /tmp/proxysql.cnf
 

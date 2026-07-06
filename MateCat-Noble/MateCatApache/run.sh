@@ -89,7 +89,7 @@ zend_extension=xdebug.so
 xdebug.mode=debug
 xdebug.start_with_request=yes
 xdebug.client_host="'${XDEBUG_CONFIG}'"
-xdebug.client_port=9000
+xdebug.client_port='${XDEBUG_PORT}'
 xdebug.idekey="PHPSTORM"
 xdebug.log_level=0
 '
