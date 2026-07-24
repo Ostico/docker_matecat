@@ -1,7 +1,7 @@
 # FROM ostico/matecat-noble-base-image:latest
 
 # -------------------------- Base image replicated here to be sticky to amd64 platform ----------------------------
-FROM ubuntu:24.04
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
