@@ -15,7 +15,7 @@ RUN apt-get update && apt-get -y full-upgrade && apt-get install -y software-pro
     apt-get update && \
     apt-get install -y  openjdk-8-jre && \
     cd /tmp/ && \
-    wget http://archive.apache.org/dist/activemq/5.15.10/apache-activemq-${AMQ_VERSION}-bin.tar.gz && \
+    wget http://archive.apache.org/dist/activemq/${AMQ_VERSION}/apache-activemq-${AMQ_VERSION}-bin.tar.gz && \
     tar xzf apache-activemq-${AMQ_VERSION}-bin.tar.gz && rm apache-activemq-${AMQ_VERSION}-bin.tar.gz && \
     mv apache-activemq-${AMQ_VERSION} /opt && \
     ln -sf /opt/apache-activemq-${AMQ_VERSION}/ /opt/activemq && \
