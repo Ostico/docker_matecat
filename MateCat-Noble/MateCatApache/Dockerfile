@@ -59,9 +59,6 @@ RUN if [ "$USER_UID" != "1000" ]; then \
       sed -i 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=ubuntu/' /etc/apache2/envvars; \
     fi
 
-RUN sed -i 's/session.save_handler\s*=\s*files/session.save_handler = redis/' ${PHPDIR}/apache2/php.ini
-RUN echo 'session.save_path = "tcp://redis:6379?database=15"' >> ${PHPDIR}/apache2/php.ini
-
 ## Enable MateCat site
 COPY data/ /
 

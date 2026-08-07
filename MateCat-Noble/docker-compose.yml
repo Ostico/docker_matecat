@@ -18,7 +18,7 @@ services:
       #        - matecat-network
 
   redis:
-    image: redis
+    image: valkey/valkey:9.1-alpine
     container_name: matecat-redis
     ports:
       - "6379:6379"
