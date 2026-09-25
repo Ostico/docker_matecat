@@ -62,7 +62,7 @@ RUN if [ "$USER_UID" != "1000" ]; then \
 ## Enable MateCat site
 COPY data/ /
 
-RUN a2enmod rewrite filter deflate headers expires proxy_http ssl php8.3 proxy_balancer proxy_wstunnel slotmem_shm
+RUN a2enmod rewrite filter deflate headers expires proxy_http ssl php8.3 proxy_balancer lbmethod_byrequests proxy_wstunnel slotmem_shm
 RUN #phpenmod mcrypt
 
 COPY run_plugin_js_build.sh /tmp/run_plugin_js_build.sh
