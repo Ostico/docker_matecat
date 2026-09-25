@@ -105,10 +105,18 @@ popd || exit 1
 echo "Starting Apache..."
 # Stale pid survives docker restart; service apache2 restart would skip start as "already running"
 rm -f /var/run/apache2/apache2.pid
-/etc/init.d/apache2 restart
-echo "Apache Started"
+if apache2ctl configtest; then
+  apache2ctl start
+  echo "Apache Started"
+else
+  echo "Apache NOT started: configtest failed" >&2
+fi
 
+# bash as PID 1 ignores SIGTERM: without this, docker stop waits 10s and SIGKILLs Apache
+trap 'apache2ctl stop; exit 0' TERM INT
+
+# sleep in the background: bash runs the trap only once the foreground command returns
 while true; do
-  #    echo date " => Waiting for an infinite. More or less..."
-  sleep 5
+  sleep 5 &
+  wait $!
 done

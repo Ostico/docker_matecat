@@ -61,6 +61,7 @@ RUN if [ "$USER_UID" != "1000" ]; then \
 
 ## Enable MateCat site
 COPY data/ /
+RUN echo '. /etc/apache2/stale-pid-guard.sh' >> /etc/apache2/envvars
 
 RUN a2enmod rewrite filter deflate headers expires proxy_http ssl php8.3 proxy_balancer lbmethod_byrequests proxy_wstunnel slotmem_shm
 RUN #phpenmod mcrypt
